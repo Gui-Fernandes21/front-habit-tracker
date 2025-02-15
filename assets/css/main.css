@@ -1,16 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 :root {
-  --primary: #A3B18A;
-  --accent: #D9CAB3;
-  --dark: #333333;
-  --dark-light: #707070;
-  --light: #F5F5F5;
+	--primary: #a3b18a;
+	--accent: #d9cab3;
+	--dark: #333333;
+	--dark-light: #707070;
+	--light: #f5f5f5;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.primary-btn {
+	background-color: var(--primary);
+	color: var(--light);
+	padding: 0.5rem 3rem;
+	border: 2px solid var(--primary);
+	border-radius: 5px;
+	cursor: pointer;
+
+	font-family: "Open Sans", sans-serif;
+
+	&.outline,
+	&:hover {
+		background-color: transparent;
+		color: var(--primary);
+	}
+
+  &.outline:hover {
+    background-color: var(--primary);
+    color: var(--light);
+  }
+}
+
+.accent-btn {
+	background-color: var(--accent);
+	color: var(--light);
+	padding: 0.5rem 3rem;
+	border: 2px solid var(--accent);
+	border-radius: 5px;
+	cursor: pointer;
+
+	font-family: "Open Sans", sans-serif;
+
+	&.outline,
+	&:hover {
+		background-color: transparent;
+		color: var(--accent);
+	}
+
+	&.outline:hover {
+		background-color: var(--accent);
+		color: var(--light);
+	}
 }
