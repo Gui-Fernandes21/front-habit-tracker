@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
 
 const email = ref('');
 const password = ref('');
 
 const login = () => {
+  router.push('/dashboard');
   console.log(email.value, password.value);
 }	
 </script>

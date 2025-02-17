@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const email = ref('');
 const password = ref('');
 const name = ref('');
 
 const signup = () => {
+  router.push('/dashboard');
   console.log(email.value, password.value);
 }	
 </script>
