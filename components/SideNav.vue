@@ -87,5 +87,13 @@
   width: 3rem;
 
   padding: 0;
+
+  &:hover {
+    background: transparent;
+
+    & path {
+      fill: var(--primary);
+    }
+  }
 }
 </style>

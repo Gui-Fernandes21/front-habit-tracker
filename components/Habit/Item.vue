@@ -9,7 +9,9 @@ const props = defineProps({ item: { type: Object, required: true } });
     <div class="head">
       <div class="time">{{ item.time }}</div>
       <h2 class="title">{{ item.title }}</h2>
-      <div class="float-btn"></div>
+      <div class="float-btn">
+        <img src="/svg/edit-icon.svg" alt="edit icon">
+      </div>
     </div>
     <div class="body body-text">
       {{ item.description }}
