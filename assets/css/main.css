@@ -58,3 +58,9 @@
 		color: var(--light);
 	}
 }
+
+.body-text {
+	font-family: "Open Sans", sans-serif;
+	font-size: .9rem;
+	color: #333333;
+}
