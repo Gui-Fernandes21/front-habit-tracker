@@ -9,7 +9,7 @@ const props = defineProps({ item: { type: Object, required: true } });
     <div class="head">
       <div class="time">{{ item.time }}</div>
       <h2 class="title">{{ item.title }}</h2>
-      .action
+      <div class="float-btn"></div>
     </div>
     <div class="body body-text">
       {{ item.description }}
@@ -37,6 +37,10 @@ li {
   align-items: center;
 
   font-family: "Montserrat", sans-serif;
+}
+
+.title {
+  font-weight: 400;
 }
 
 .body {

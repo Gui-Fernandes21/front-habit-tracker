@@ -64,3 +64,12 @@
 	font-size: .9rem;
 	color: #333333;
 }
+
+.float-btn {
+	background-color: var(--primary);
+	border: 2px solid var(--primary);
+	color: var(--light);
+	padding: 1rem;
+	border-radius: 50%;
+	cursor: pointer;
+}
