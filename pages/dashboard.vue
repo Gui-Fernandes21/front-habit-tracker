@@ -28,25 +28,26 @@ const habits = [
 </script>
 
 <template>
-	<section>
+	<section class="dashboard">
 		<TheNav />
-		<div class="container">
-			<SideNav />
-			<div class="content">
-				<HabitPagination></HabitPagination>
-				<ul>
-					<HabitItem v-for="item in habits" :item="item"></HabitItem>
-				</ul>
-			</div>
+		<SideNav />
+		<div class="content">
+			<HabitPagination></HabitPagination>
+			<ul>
+				<HabitItem v-for="item in habits" :item="item"></HabitItem>
+			</ul>
 		</div>
 	</section>
 </template>
 
 <style scoped>
-.container {
+.dashboard {
 	display: grid;
+
 	grid-template-columns: 4rem calc(100% - 4rem);
-	min-height: 90vh;
+	grid-template-rows: 5rem 1fr;
+
+  height: 100%;
 }
 
 ul {
@@ -54,6 +55,9 @@ ul {
 }
 
 .content {
+  grid-column: 2;
+  grid-row: 2;
+
 	padding: 1rem;
 }
 </style>

@@ -8,9 +8,18 @@
 
 <style scoped>
 nav {
+	grid-column: span 2;
+	grid-row: 1;
+
+	position: fixed;
+
+	width: 100%;
+	height: 5rem;
+	
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	
 	padding: 1rem 2rem;
 	background: var(--light);
 	border-bottom: 2px solid var(--primary);

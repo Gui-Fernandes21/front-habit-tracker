@@ -66,10 +66,15 @@
 }
 
 .float-btn {
+	height: 2.5rem;
+  width: 2.5rem;
+
+	padding: 1rem;
+
+
 	background-color: var(--primary);
 	border: 2px solid var(--primary);
 	color: var(--light);
-	padding: 1rem;
 	border-radius: 50%;
 	cursor: pointer;
 }
