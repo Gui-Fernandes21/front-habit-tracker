@@ -21,8 +21,8 @@ const login = () => {
     <div class="modal">
       <h1>Login</h1>
       <form @submit.prevent="login">
-        <input type="email" placeholder="Email" id="email" v-model="email" required />
-        <input type="password" placeholder="Password" id="password" v-model="password" required />
+        <input class="primary-input" type="email" placeholder="Email" id="email" v-model="email" required />
+        <input class="primary-input" type="password" placeholder="Password" id="password" v-model="password" required />
         <button class="primary-btn">Login</button>
       </form>
     </div>
@@ -63,13 +63,6 @@ form {
   flex-direction: column;
   gap: 1rem;
   margin-top: 2.5rem;
-}
-
-input {
-  padding: 1rem 1rem;
-  border: 2px solid var(--primary);
-  border-radius: 0.5rem;
-  font-size: 1.1rem;
 }
 
 button {

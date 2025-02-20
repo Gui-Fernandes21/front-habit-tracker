@@ -2,25 +2,28 @@
 const habits = [
 	{
 		id: 1,
-		title: "read a book",
+		name: "read a book",
 		status: "ToDo",
-		time: "12:30PM",
+		hour: "12",
+		minute: "30",
 		description:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, illum quae ducimus, facilis error repudiandae assumenda eum, provident ipsa beatae modi? Temporibus iure corrupti sit inventore debitis assumenda maxime accusantium.",
 	},
 	{
 		id: 1,
-		title: "Go for a Walk",
+		name: "Go for a Walk",
 		status: "ToDo",
-		time: "13:30PM",
+		hour: "13",
+		minute: "30",
 		description:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, illum quae ducimus, facilis error repudiandae assumenda eum, provident ipsa beatae modi? Temporibus iure corrupti sit inventore debitis assumenda maxime accusantium.",
 	},
 	{
 		id: 1,
-		title: "Hit the Gym",
+		name: "Hit the Gym",
 		status: "ToDo",
-		time: "14:30PM",
+		hour: "14",
+		minute: "30",
 		description:
 			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, illum quae ducimus, facilis error repudiandae assumenda eum, provident ipsa beatae modi? Temporibus iure corrupti sit inventore debitis assumenda maxime accusantium.",
 	},

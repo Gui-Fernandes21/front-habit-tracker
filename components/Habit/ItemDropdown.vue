@@ -1,17 +1,16 @@
 <script setup>
-import { defineProps } from "vue";
+import { defineEmits, defineProps } from 'vue';
 
-const props = defineProps({
-	habit: { type: Object, required: true },
-	open: { type: Boolean, required: true },
-});
+const emit = defineEmits(['edit-habit', 'delete-habit','update:open']);
+const props = defineProps({ open: { type: Boolean, required: true } });
 
 const editHabit = () => {
-	
+	emit('update:open', false)
+	emit("edit-habit");
 }
 
 const deleteHabit = () => {
-	
+	emit("delete-habit");
 }
 </script>
 
@@ -29,7 +28,7 @@ const deleteHabit = () => {
 	position: absolute;
 	top: 100%; /* Position the menu below the dropdown */
 	left: -1.5rem;
-	z-index: 1000; 
+	z-index: 100; 
 }
 
 .dropdown-menu {

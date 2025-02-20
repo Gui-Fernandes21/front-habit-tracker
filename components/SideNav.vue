@@ -20,7 +20,7 @@
         </router-link>
       </div>
       <div class="settings">
-        <router-link to="/settings" class="float-btn">
+        <router-link to="/preferences" class="float-btn">
           <svg
             width="15"
             height="15"

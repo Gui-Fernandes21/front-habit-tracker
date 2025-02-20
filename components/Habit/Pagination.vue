@@ -21,24 +21,21 @@ const currentDate = computed(() => {
 	<section>
 		<div class="page">
       <h2 class="date">{{ currentDate }}</h2>
-      <div class="actions">
+      <!-- <div class="actions">
         <div class="prev"><</div>
         <div class="next">></div>
-      </div>
+      </div> -->
     </div>
 		<div class="action">
-			<button class="primary-btn">Edit Habits</button>
+			<button class="primary-btn">Add Habits</button>
 		</div>
     <Clock />
-		<!-- <div class="current-time">{{ displayedTime }}</div> -->
 	</section>
 </template>
 
 <style scoped>
 section {
 	padding: 1rem;
-
-  /* margin-bottom: 3rem; */
 
 	display: flex;
 	align-items: center;
