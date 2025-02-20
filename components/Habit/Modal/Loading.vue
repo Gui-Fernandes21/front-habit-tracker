@@ -33,6 +33,8 @@ const props = defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
+
+	font-family: "Montserrat", sans-serif;
 }
 
 /* Semi-transparent dark overlay */
@@ -42,7 +44,7 @@ const props = defineProps({
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(34, 34, 34, 0.316);
 }
 
 /* 
@@ -55,7 +57,8 @@ const props = defineProps({
   width: 200px;
   height: 250px;
   background-color: #fff;
-  border-radius: 12px;
+  border-radius: 10px;
+	border: 2px solid var(--primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
   /* 

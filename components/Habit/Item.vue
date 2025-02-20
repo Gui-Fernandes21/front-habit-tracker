@@ -66,6 +66,8 @@ const skipAction = () => {
 			:open="editModal"
 			@close="closeEdit"
 		></HabitModalEdit>
+
+    
 	</li>
 </template>
 

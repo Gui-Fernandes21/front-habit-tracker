@@ -65,6 +65,8 @@ const close = () => {
 			</form>
 		</div>
 	</div>
+
+  <HabitModalLoading :show="false" ></HabitModalLoading>
 </template>
 
 <style scoped>
