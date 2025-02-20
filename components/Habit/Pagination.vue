@@ -1,9 +1,5 @@
 <script setup>
-import { computed } from "vue";
-
-const displayedTime = computed(() => {
-	return new Date().getHours() + ":" + new Date().getMinutes();
-});
+import { ref, computed } from "vue";
 
 const currentDate = computed(() => {
   const now = new Date();
@@ -15,6 +11,17 @@ const currentDate = computed(() => {
 
   return `${day}/${month}`;
 });
+
+const addHabitModal = ref(false);
+
+const addHabit = () => {
+  addHabitModal.value = true;
+};
+
+const closeHabitModal = () => {
+  addHabitModal.value = false;
+};
+
 </script>
 
 <template>
@@ -27,10 +34,11 @@ const currentDate = computed(() => {
       </div> -->
     </div>
 		<div class="action">
-			<button class="primary-btn">Add Habits</button>
+			<button @click="addHabit" @close="closeHabitModal" class="primary-btn">Add Habits</button>
 		</div>
     <Clock />
 	</section>
+  <HabitModalAdd :open="addHabitModal" @close="closeHabitModal" />
 </template>
 
 <style scoped>

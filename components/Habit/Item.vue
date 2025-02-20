@@ -21,6 +21,9 @@ const deleteHabit = () => {
 
 	const confirmDelete = confirm("Are you sure you want to delete this habit?");
 	if (confirmDelete) {
+    console.log("delete confirmed");
+  } else {
+    console.log("delete canceled");
 	}
 };
 
@@ -67,7 +70,7 @@ const skipAction = () => {
 			@close="closeEdit"
 		></HabitModalEdit>
 
-    
+
 	</li>
 </template>
 

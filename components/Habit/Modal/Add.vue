@@ -5,20 +5,27 @@ const emit = defineEmits(["close"]);
 
 const props = defineProps({
 	open: { type: Boolean, required: true },
-	habit: { type: Object, required: true },
+	// habit: { type: Object, required: true },
 });
 
-const habitName = ref(props.habit.name);
-const habitDescription = ref(props.habit.description);
-const habitHour = ref(props.habit.hour);
-const habitMinute = ref(props.habit.minute);
+const habitName = ref("");
+const habitDescription = ref("");
+const habitHour = ref("");
+const habitMinute = ref("");
 
 const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
 
 const saveHabit = () => {
+
+  console.log("Saving habit:", {
+    name: habitName.value,
+    description: habitDescription.value,
+    hour: habitHour.value,
+    minute: habitMinute.value,
+  });
   emit("close");
-  // useState("loading").value = true;
+  // useState("loading").value = true; // Consider implementing loading state if needed.
 };
 
 const close = () => {
@@ -29,7 +36,7 @@ const close = () => {
 <template>
 	<div class="modal" v-if="open">
 		<div class="modal-content">
-			<h2 class="title">Edit Habit</h2>
+			<h2 class="title">Create a Habit</h2>
 			<form @submit.prevent="saveHabit">
 				<div class="form-group">
 					<label for="habit-name">Habit Name</label>
