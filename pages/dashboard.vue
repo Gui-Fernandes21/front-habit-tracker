@@ -47,6 +47,38 @@ const deleteHabit = async (id) => {
 		console.error("An error occurred while deleting habit:", err);
 	}
 };
+
+const saveHabit = async (habit) => {
+	useState("loading").value = true;
+
+	const body = {
+		name: habit.name,
+		description: habit.description,
+		hour: habit.hour,
+		minute: habit.minute,
+	};
+
+	try {
+		const { data } = await useService("/update-habit/" + habit._id, {
+			method: "PATCH",
+			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
+			body,
+		});
+
+		habits.value = habits.value.map((item) => {
+			if (item._id === habit._id) {
+				item = body;
+			}
+			return item;
+		});
+		
+		console.log("Habit updated successfully:", data.value.habit);
+	} catch (err) {
+		console.error("An error occurred while updating habit:", err);
+	} finally {
+		useState("loading").value = false;
+	};
+};
 </script>
 
 <template>
@@ -61,7 +93,7 @@ const deleteHabit = async (id) => {
 					:key="item.id"
 					:item="item"
 					@delete="deleteHabit"
-
+					@save-habit="saveHabit"
 				></HabitItem>
 			</ul>
 			<h1 v-else>No habits found.</h1>

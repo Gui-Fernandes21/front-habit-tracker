@@ -17,8 +17,15 @@ const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
 
 const saveHabit = () => {
-  emit("close");
-  // useState("loading").value = true;
+	emit("save-habit", {
+		name: habitName,
+		description: habitDescription,
+		hour: habitHour,
+		minute: habitMinute,
+		_id: props.habit._id,
+	});
+	emit("close");
+	// useState("loading").value = true;
 };
 
 const close = () => {
@@ -42,14 +49,16 @@ const close = () => {
 				</div>
 				<div class="form-group">
 					<label for="habit-time">Habit Time</label>
-          <div class="group-select">
-            <select id="habit-time" v-model="habitHour">
-              <option v-for="hour in hours" :value="hour">{{ hour }}</option>
-            </select>
-            <select id="habit-time" v-model="habitMinute">
-              <option v-for="minute in minutes" :value="minute">{{ minute }}</option>
-            </select>
-          </div>
+					<div class="group-select">
+						<select id="habit-time" v-model="habitHour">
+							<option v-for="hour in hours" :value="hour">{{ hour }}</option>
+						</select>
+						<select id="habit-time" v-model="habitMinute">
+							<option v-for="minute in minutes" :value="minute">
+								{{ minute }}
+							</option>
+						</select>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="habit-description">Habit Description</label>
@@ -82,24 +91,23 @@ const close = () => {
 	justify-content: center;
 	align-items: center;
 
-	
 	z-index: 10000;
 }
 
 .modal-content {
 	background-color: white;
 	border: 2px solid var(--primary);
-	
+
 	padding: 2rem;
 	border-radius: 5px;
 	width: 50%;
-	
+
 	display: flex;
 	flex-direction: column;
 	gap: 2.5rem;
-	
+
 	text-align: start;
-	
+
 	h2 {
 		font-family: "Montserrat", sans-serif;
 		font-weight: 400;
@@ -120,21 +128,21 @@ form {
 }
 
 label {
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.9rem;
-  margin-bottom: 5px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 0.9rem;
+	margin-bottom: 5px;
 }
 
 select {
-  padding: .5rem 1rem;
-  border: 2px solid var(--primary);
-  border-radius: 5px;
-  cursor: pointer;
+	padding: 0.5rem 1rem;
+	border: 2px solid var(--primary);
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 .group-select {
-  display: flex;
-  gap: 1rem;
+	display: flex;
+	gap: 1rem;
 }
 
 #habit-description {
