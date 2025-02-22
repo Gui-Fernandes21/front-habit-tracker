@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const habits = [
+definePageMeta({
+	middleware: "auth",
+});
+
+const habits = [ 
 	{
 		id: 1,
 		name: "read a book",
@@ -50,7 +54,7 @@ const habits = [
 	grid-template-columns: 4rem calc(100% - 4rem);
 	grid-template-rows: 5rem 1fr;
 
-  height: 100%;
+	height: 100%;
 }
 
 ul {
@@ -58,8 +62,8 @@ ul {
 }
 
 .content {
-  grid-column: 2;
-  grid-row: 2;
+	grid-column: 2;
+	grid-row: 2;
 
 	padding: 1rem;
 }

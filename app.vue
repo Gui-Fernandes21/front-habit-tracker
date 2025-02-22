@@ -1,7 +1,8 @@
 <script setup>
 // import { } from "vue";
 
-const loading = useState("loading", () => false);
+useState("loading", () => false);
+useState("auth-token", () => null);
 </script>
 
 <template>

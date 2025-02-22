@@ -8,4 +8,9 @@ export default defineNuxtConfig({
 			title: "Habit Tracker",
 		},
 	},
+	runtimeConfig: {
+		public: {
+			apiUrl: process.env.NUXT_PUBLIC_API_URL || "http://localhost:3030/",
+		},
+	},
 });

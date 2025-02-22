@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<script setup>
+definePageMeta({
+	middleware: "auth",
+});
 </script>
 
 <template>
@@ -7,8 +10,7 @@
 		<SideNav />
 		<div class="content">
 			<HabitPagination></HabitPagination>
-			<ul>
-			</ul>
+			<ul></ul>
 		</div>
 	</section>
 </template>
@@ -20,7 +22,7 @@
 	grid-template-columns: 4rem calc(100% - 4rem);
 	grid-template-rows: 5rem 1fr;
 
-  height: 100%;
+	height: 100%;
 }
 
 ul {
@@ -28,8 +30,8 @@ ul {
 }
 
 .content {
-  grid-column: 2;
-  grid-row: 2;
+	grid-column: 2;
+	grid-row: 2;
 
 	padding: 1rem;
 }
