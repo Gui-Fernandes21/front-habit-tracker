@@ -24,6 +24,8 @@ nav {
 	background: var(--light);
 	border-bottom: 2px solid var(--primary);
 	color: var(--white);
+
+	z-index: 1000;
 }
 
 .logo {

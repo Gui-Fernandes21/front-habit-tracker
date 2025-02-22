@@ -1,8 +1,11 @@
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps, ref, defineEmits } from "vue";
 import ItemDropdown from "./ItemDropdown.vue";
 
 const props = defineProps({ item: { type: Object, required: true } });
+const emit = defineEmits(["delete"]);
+
+const router = useRouter();
 
 const dropdownOpen = ref(false);
 const editModal = ref(false);
@@ -16,15 +19,24 @@ const closeEdit = () => {
 	editModal.value = false;
 };
 
-const deleteHabit = () => {
-	console.log("delete");
+const deleteHabit = async () => {
+	emit("delete", props.item._id);
+	// const confirmDelete = confirm("Are you sure you want to delete this habit?");
+	// if (!confirmDelete) {
+	// 	return console.log("delete canceled");
+	// }
 
-	const confirmDelete = confirm("Are you sure you want to delete this habit?");
-	if (confirmDelete) {
-    console.log("delete confirmed");
-  } else {
-    console.log("delete canceled");
-	}
+	// try {
+	// 	const { data } = await useService("/delete-habit/" + props.item._id, {
+	// 		method: "DELETE",
+	// 		headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
+	// 	});
+
+	// 	router.go(0);
+	// 	useState("loading").value = false;
+	// } catch (err) {
+	// 	console.error("An error occurred while deleting habit:", err);
+	// }
 };
 
 const toggleDropdown = () => {
@@ -69,8 +81,6 @@ const skipAction = () => {
 			:open="editModal"
 			@close="closeEdit"
 		></HabitModalEdit>
-
-
 	</li>
 </template>
 
@@ -116,6 +126,6 @@ li {
 }
 
 .time {
-  font-size: 1.2rem;
+	font-size: 1.2rem;
 }
 </style>

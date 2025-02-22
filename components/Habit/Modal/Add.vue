@@ -2,10 +2,10 @@
 import { ref, defineProps, defineEmits } from "vue";
 
 const emit = defineEmits(["close"]);
+const router = useRouter();
 
 const props = defineProps({
 	open: { type: Boolean, required: true },
-	// habit: { type: Object, required: true },
 });
 
 const habitName = ref("");
@@ -16,16 +16,36 @@ const habitMinute = ref("");
 const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
 
-const saveHabit = () => {
+const saveHabit = async () => {
+	useState("loading").value = true;
 
-  console.log("Saving habit:", {
-    name: habitName.value,
-    description: habitDescription.value,
-    hour: habitHour.value,
-    minute: habitMinute.value,
-  });
-  emit("close");
-  // useState("loading").value = true; // Consider implementing loading state if needed.
+	if (!habitName.value || !habitHour.value || !habitMinute.value) {
+		console.error("Please fill in all required fields.");
+		useState("loading").value = false;
+		return;
+	}
+
+	try {
+		const body = {
+			name: habitName.value,
+			description: habitDescription.value,
+			hour: habitHour.value,
+			minute: habitMinute.value,
+		};
+
+		const { data } = await useService("/add-habit", {
+			method: "POST",
+			body: JSON.stringify(body),
+			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
+		});
+
+		router.go(0);
+		useState("loading").value = false;
+		emit("close");
+	} catch (error) {
+		useState("loading").value = false;
+		console.error("An error occurred while saving habit:", error);
+	}
 };
 
 const close = () => {
@@ -49,14 +69,16 @@ const close = () => {
 				</div>
 				<div class="form-group">
 					<label for="habit-time">Habit Time</label>
-          <div class="group-select">
-            <select id="habit-time" v-model="habitHour">
-              <option v-for="hour in hours" :value="hour">{{ hour }}</option>
-            </select>
-            <select id="habit-time" v-model="habitMinute">
-              <option v-for="minute in minutes" :value="minute">{{ minute }}</option>
-            </select>
-          </div>
+					<div class="group-select">
+						<select id="habit-time" v-model="habitHour">
+							<option v-for="hour in hours" :value="hour">{{ hour }}</option>
+						</select>
+						<select id="habit-time" v-model="habitMinute">
+							<option v-for="minute in minutes" :value="minute">
+								{{ minute }}
+							</option>
+						</select>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="habit-description">Habit Description</label>
@@ -76,7 +98,7 @@ const close = () => {
 		</div>
 	</div>
 
-  <HabitModalLoading :show="false" ></HabitModalLoading>
+	<HabitModalLoading :show="false"></HabitModalLoading>
 </template>
 
 <style scoped>
@@ -91,12 +113,14 @@ const close = () => {
 	justify-content: center;
 	align-items: center;
 
-	z-index: 10000;
+	z-index: 1000;
 }
 
 .modal-content {
 	background-color: white;
 	border: 2px solid var(--primary);
+
+	text-align: start;
 
 	padding: 2rem;
 	border-radius: 5px;
@@ -126,21 +150,21 @@ form {
 }
 
 label {
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.9rem;
-  margin-bottom: 5px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 0.9rem;
+	margin-bottom: 5px;
 }
 
 select {
-  padding: .5rem 1rem;
-  border: 2px solid var(--primary);
-  border-radius: 5px;
-  cursor: pointer;
+	padding: 0.5rem 1rem;
+	border: 2px solid var(--primary);
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 .group-select {
-  display: flex;
-  gap: 1rem;
+	display: flex;
+	gap: 1rem;
 }
 
 #habit-description {

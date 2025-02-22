@@ -1,37 +1,52 @@
 <script setup>
+import { ref } from "vue";
 definePageMeta({
 	middleware: "auth",
 });
 
-const habits = [ 
-	{
-		id: 1,
-		name: "read a book",
-		status: "ToDo",
-		hour: "12",
-		minute: "30",
-		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, illum quae ducimus, facilis error repudiandae assumenda eum, provident ipsa beatae modi? Temporibus iure corrupti sit inventore debitis assumenda maxime accusantium.",
+const habits = ref([]);
+
+// ===============================================================================
+useService("/fetch-habits", {
+	method: "POST",
+	headers: {
+		Authorization: `Bearer ${useCookie("auth-token").value}`,
 	},
-	{
-		id: 1,
-		name: "Go for a Walk",
-		status: "ToDo",
-		hour: "13",
-		minute: "30",
-		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, illum quae ducimus, facilis error repudiandae assumenda eum, provident ipsa beatae modi? Temporibus iure corrupti sit inventore debitis assumenda maxime accusantium.",
-	},
-	{
-		id: 1,
-		name: "Hit the Gym",
-		status: "ToDo",
-		hour: "14",
-		minute: "30",
-		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, illum quae ducimus, facilis error repudiandae assumenda eum, provident ipsa beatae modi? Temporibus iure corrupti sit inventore debitis assumenda maxime accusantium.",
-	},
-];
+})
+	.then((res) => {
+		useState("loading").value = false;
+		const { data } = res;
+		if (data.value) {
+			habits.value = data.value.habits;
+			console.log("Habits fetched successfully:", habits.value);
+		}
+	})
+	.catch((error) => {
+		useState("loading").value = false;
+		console.error("An error occurred while fetching habits:", error);
+	});
+
+// ==============================METHODS========================================
+const deleteHabit = async (id) => {
+	const confirmDelete = confirm("Are you sure you want to delete this habit?");
+	if (!confirmDelete) {
+		return console.log("delete canceled");
+	}
+	useState("loading").value = true;
+
+	try {
+		const { data } = await useService("/delete-habit/" + id, {
+			method: "DELETE",
+			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
+		});
+
+		habits.value = habits.value.filter((habit) => habit._id !== id);
+
+		useState("loading").value = false;
+	} catch (err) {
+		console.error("An error occurred while deleting habit:", err);
+	}
+};
 </script>
 
 <template>
@@ -40,9 +55,16 @@ const habits = [
 		<SideNav />
 		<div class="content">
 			<HabitPagination></HabitPagination>
-			<ul>
-				<HabitItem v-for="item in habits" :item="item"></HabitItem>
+			<ul v-if="habits.length">
+				<HabitItem
+					v-for="item in habits"
+					:key="item.id"
+					:item="item"
+					@delete="deleteHabit"
+
+				></HabitItem>
 			</ul>
+			<h1 v-else>No habits found.</h1>
 		</div>
 	</section>
 </template>
@@ -66,5 +88,13 @@ ul {
 	grid-row: 2;
 
 	padding: 1rem;
+
+	text-align: center;
+}
+
+h1 {
+	color: var(--dark-light);
+	font-family: "Montserrat", sans-serif;
+	margin: 1rem 0;
 }
 </style>

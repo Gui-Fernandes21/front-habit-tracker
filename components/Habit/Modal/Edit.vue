@@ -82,21 +82,24 @@ const close = () => {
 	justify-content: center;
 	align-items: center;
 
+	
 	z-index: 10000;
 }
 
 .modal-content {
 	background-color: white;
 	border: 2px solid var(--primary);
-
+	
 	padding: 2rem;
 	border-radius: 5px;
 	width: 50%;
-
+	
 	display: flex;
 	flex-direction: column;
 	gap: 2.5rem;
-
+	
+	text-align: start;
+	
 	h2 {
 		font-family: "Montserrat", sans-serif;
 		font-weight: 400;

@@ -14,7 +14,7 @@ const login = async () => {
 		email: email.value,
 		password: password.value,
 	};
-
+  
 	try {
 		const { data, status } = await useService("/login", {
 			method: "POST",
