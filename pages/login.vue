@@ -7,10 +7,34 @@ const router = useRouter();
 const email = ref('');
 const password = ref('');
 
-const login = () => {
-  router.push('/dashboard');
-  console.log(email.value, password.value);
-}	
+const login = async () => {
+	// useState("loading").value = true;
+
+	const body = {
+		email: email.value,
+		password: password.value,
+	};
+
+	try {
+		const { data, status } = await useService("/login", {
+			method: "POST",
+			body: JSON.stringify(body),
+		});
+
+		if (status.value !== "success") {
+			return console.error("Login failed:", data.value.message);
+		}
+
+		if (data.value) {
+			const { token } = data.value;
+			useCookie("auth-token").value = token;
+			useState("loading").value = false;
+			router.push("/dashboard");
+		}
+	} catch (error) {
+		console.error("An error occurred during login:", error);
+	}
+};
 </script>
 
 <template>

@@ -30,7 +30,7 @@ const signup = async () => {
 		if (data.value) {
 			const { token } = data.value;
 			useCookie("auth-token").value = token;
-			// useState("loading").value = false;
+			useState("loading").value = false;
 			router.push("/dashboard");
 		}
 	} catch (error) {
