@@ -1,4 +1,6 @@
 <script setup>
+import Loading from './components/global/Loading.vue';
+
 // import { } from "vue";
 
 useState("loading", () => false);
@@ -7,8 +9,8 @@ useState("auth-token", () => null);
 
 <template>
 	<div>
+		<Loading :show="useState('loading').value" />
 		<NuxtPage />
-		<HabitModalLoading :show="loading" />
 	</div>
 </template>
 

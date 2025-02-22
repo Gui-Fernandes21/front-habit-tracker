@@ -9,7 +9,7 @@ const password = ref("");
 const name = ref("");
 
 const signup = async () => {
-	// useState("loading").value = true;
+	useState("loading").value = true;
 
 	const body = {
 		email: email.value,
@@ -24,6 +24,7 @@ const signup = async () => {
 		});
 
 		if (status.value !== "success") {
+			useState("loading").value = false;
 			return console.error("Signup failed:", data.message);
 		}
 
@@ -34,6 +35,7 @@ const signup = async () => {
 			router.push("/dashboard");
 		}
 	} catch (error) {
+		useState("loading").value = false;
 		console.error("An error occurred during signup:", error);
 	}
 };

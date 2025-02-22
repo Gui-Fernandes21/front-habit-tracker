@@ -1,8 +1,11 @@
 <script setup>
+const router = useRouter();
+
 const logout = async () => {
 	useCookie("auth-token").value = null;
-	navigateTo("/");
+	router.push("/");
 };
+
 </script>
 
 <template>

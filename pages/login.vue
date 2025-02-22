@@ -8,7 +8,7 @@ const email = ref('');
 const password = ref('');
 
 const login = async () => {
-	// useState("loading").value = true;
+	useState("loading").value = true;
 
 	const body = {
 		email: email.value,
@@ -22,6 +22,7 @@ const login = async () => {
 		});
 
 		if (status.value !== "success") {
+			useState("loading").value = false;
 			return console.error("Login failed:", data.value.message);
 		}
 
@@ -32,6 +33,7 @@ const login = async () => {
 			router.push("/dashboard");
 		}
 	} catch (error) {
+		useState("loading").value = false;
 		console.error("An error occurred during login:", error);
 	}
 };
