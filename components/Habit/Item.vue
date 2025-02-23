@@ -5,6 +5,8 @@ import ItemDropdown from "./ItemDropdown.vue";
 const props = defineProps({ item: { type: Object, required: true } });
 const emit = defineEmits(["delete", "save-habit"]);
 
+const habit = ref(props.item);
+
 const dropdownOpen = ref(false);
 const editModal = ref(false);
 
@@ -18,7 +20,7 @@ const closeEdit = () => {
 };
 
 const deleteHabit = async () => {
-	emit("delete", props.item._id);
+	emit("delete");
 };
 
 const toggleDropdown = () => {
@@ -63,7 +65,7 @@ const saveHabit = (updatedHabit) => {
 		</div>
 
 		<HabitModalEdit
-			:habit="item"
+			:habit="habit"
 			:open="editModal"
 			@close="closeEdit"
 			@save-habit="saveHabit"

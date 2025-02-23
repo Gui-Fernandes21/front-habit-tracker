@@ -8,6 +8,8 @@ const props = defineProps({
 	habit: { type: Object, required: true },
 });
 
+const habit = ref(props.habit);
+
 const habitName = ref(props.habit.name);
 const habitDescription = ref(props.habit.description);
 const habitHour = ref(props.habit.hour);
@@ -17,15 +19,16 @@ const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
 
 const saveHabit = () => {
+	console.log(habit.value._id);
+
 	emit("save-habit", {
-		name: habitName,
-		description: habitDescription,
-		hour: habitHour,
-		minute: habitMinute,
-		_id: props.habit._id,
+		name: habitName.value,
+		description: habitDescription.value,
+		hour: habitHour.value,
+		minute: habitMinute.value,
+		_id: habit.value._id,
 	});
 	emit("close");
-	// useState("loading").value = true;
 };
 
 const close = () => {

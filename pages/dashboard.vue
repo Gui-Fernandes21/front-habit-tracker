@@ -8,13 +8,12 @@ const habits = ref([]);
 
 // ===============================================================================
 useService("/fetch-habits", {
-	method: "POST",
+	method: "GET",
 	headers: {
 		Authorization: `Bearer ${useCookie("auth-token").value}`,
 	},
 })
 	.then((res) => {
-		useState("loading").value = false;
 		const { data } = res;
 		if (data.value) {
 			habits.value = data.value.habits;
@@ -22,29 +21,36 @@ useService("/fetch-habits", {
 		}
 	})
 	.catch((error) => {
-		useState("loading").value = false;
 		console.error("An error occurred while fetching habits:", error);
+	})
+	.finally(() => {
+		useState("loading").value = false;
 	});
 
 // ==============================METHODS========================================
 const deleteHabit = async (id) => {
+	if (!id) {
+		return console.error("No habit id provided.");
+	}
+
 	const confirmDelete = confirm("Are you sure you want to delete this habit?");
+
 	if (!confirmDelete) {
 		return console.log("delete canceled");
 	}
-	useState("loading").value = true;
 
 	try {
+		useState("loading").value = true;
 		const { data } = await useService("/delete-habit/" + id, {
 			method: "DELETE",
 			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
 		});
 
 		habits.value = habits.value.filter((habit) => habit._id !== id);
-
-		useState("loading").value = false;
 	} catch (err) {
 		console.error("An error occurred while deleting habit:", err);
+	} finally {
+		useState("loading").value = false;
 	}
 };
 
@@ -67,17 +73,19 @@ const saveHabit = async (habit) => {
 
 		habits.value = habits.value.map((item) => {
 			if (item._id === habit._id) {
-				item = body;
+				item = data.value.habit;
 			}
 			return item;
 		});
-		
+
+		habits.value = sortHabitsArray(habits.value);
+
 		console.log("Habit updated successfully:", data.value.habit);
 	} catch (err) {
 		console.error("An error occurred while updating habit:", err);
 	} finally {
 		useState("loading").value = false;
-	};
+	}
 };
 </script>
 
@@ -89,10 +97,10 @@ const saveHabit = async (habit) => {
 			<HabitPagination></HabitPagination>
 			<ul v-if="habits.length">
 				<HabitItem
-					v-for="item in habits"
-					:key="item.id"
-					:item="item"
-					@delete="deleteHabit"
+					v-for="habit in habits"
+					:key="habit._id"
+					:item="habit"
+					@delete="deleteHabit(habit._id)"
 					@save-habit="saveHabit"
 				></HabitItem>
 			</ul>
