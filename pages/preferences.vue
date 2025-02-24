@@ -2,6 +2,7 @@
 definePageMeta({
 	middleware: "auth",
 });
+useState('loading').value = false;
 </script>
 
 <template>
@@ -9,8 +10,12 @@ definePageMeta({
 		<TheNav />
 		<SideNav />
 		<div class="content">
-			<HabitPagination></HabitPagination>
-			<ul></ul>
+			<h1>User Settings</h1>
+			<section class="picture">
+				<h2>Profile Picture</h2>
+				<p>Upload a new profile picture</p>
+				<input type="file" />
+			</section>
 		</div>
 	</section>
 </template>
@@ -33,6 +38,16 @@ ul {
 	grid-column: 2;
 	grid-row: 2;
 
+	margin: 1rem;
 	padding: 1rem;
+}
+
+h1 {
+	font-family: "Montserrat", sans-serif;
+	font-size: 2rem;
+	font-weight: 400;
+	color: var(--dark-light); 
+
+	margin-bottom: 1rem;
 }
 </style>

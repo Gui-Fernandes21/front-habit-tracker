@@ -1,0 +1,16 @@
+# Node modules and build output
+node_modules
+.output
+dist
+
+# Local environment files
+.env
+
+# Git and Docker files
+.git
+.gitignore
+Dockerfile
+.dockerignore
+
+# Optional: OS/IDE artifacts
+.DS_Store
