@@ -1,6 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 import { ref, computed } from 'vue';
 
+
 export const useAuth = () => {
   const loggedIn = ref(false);
   const token = useCookie('auth-token');
@@ -30,8 +31,13 @@ export const useAuth = () => {
     return currentTime > expTime;
   }
 
+  function logout()  {
+    useCookie("auth-token").value = null;
+  };
+
   return {
-    isLoggedIn
+    isLoggedIn,
+    logout
   };
 };
 

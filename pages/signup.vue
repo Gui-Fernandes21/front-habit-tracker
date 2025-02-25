@@ -78,7 +78,7 @@ const signup = async () => {
 <style scoped>
 section {
 	background-color: #fff8ee;
-	min-height: 90vh;
+	min-height: 100vh;
 
 	display: grid;
 	place-items: center;
