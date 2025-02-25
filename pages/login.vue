@@ -59,7 +59,7 @@ const login = async () => {
 <style scoped>  
 section {
   background-color: #FFF8EE;
-  min-height: 90vh;
+  min-height: 100vh;
 
   display: grid;
   place-items: center;

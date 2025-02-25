@@ -1,10 +1,7 @@
 <script setup>
 const router = useRouter();
 
-const logout = async () => {
-	useCookie("auth-token").value = null;
-	router.push("/");
-};
+const { logout } = useAuth();
 
 </script>
 
