@@ -1,10 +1,12 @@
 import { jwtDecode } from 'jwt-decode';
 import { ref, computed } from 'vue';
+import { routerKey } from 'vue-router';
 
 
 export const useAuth = () => {
   const loggedIn = ref(false);
   const token = useCookie('auth-token');
+  const router = useRouter();
 
   const isLoggedIn = computed(() => {
     if (!token.value || !isTokenValid(token.value)) {
@@ -33,6 +35,7 @@ export const useAuth = () => {
 
   function logout()  {
     useCookie("auth-token").value = null;
+    router.push('/');
   };
 
   return {
