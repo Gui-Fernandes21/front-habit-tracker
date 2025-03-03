@@ -19,10 +19,14 @@ const clickUpload = () => {
 
 useService("/user-profile")
 	.then(({ data }) => {
-		console.log(data);
+		const user = data.value.user;
+
+		username.value = user.name;
+		email.value = user.email;
+		profilePicUrl.value = user.profilePicture;
 	})
 	.catch((error) => {
-		console.error("Error fetching user data:", error);
+		console.error("LOG[useService]: Error fetching user data ->", error);
 	})
 	.finally(() => {
 		useState("loading").value = false;
@@ -30,18 +34,24 @@ useService("/user-profile")
 
 const captureFile = (event) => {
 	const file = event.target.files[0];
-	const formData = new FormData();
-	formData.append("file", file);
+	profilePicUrl.value = URL.createObjectURL(file);
+
+	const fReader = new FileReader();
+	fReader.readAsDataURL(file);
+	fReader.onloadend = (parsed) => (profilePicUrl.value = parsed.target.result);
 
 	useService("/upload-profile-picture", {
 		method: "POST",
-		body: formData,
+		body: { path: profilePicUrl },
 	})
 		.then(({ data }) => {
 			console.log(data);
 		})
 		.catch((error) => {
-			console.error("Error uploading profile picture:", error);
+			console.error(
+				"LOG[captureFile(event)]:Error uploading profile picture:",
+				error
+			);
 		});
 };
 
@@ -64,13 +74,15 @@ const updatePassword = () => {
 };
 
 const updateDetails = () => {
+	useState("loading").value = true;
+
 	const body = {
-		username: username.value,
+		name: username.value,
 		email: email.value,
 	};
 
 	useService("/update-user-details", {
-		method: "POST",
+		method: "PATCH",
 		body: JSON.stringify(body),
 	})
 		.then(({ data }) => {
@@ -78,6 +90,9 @@ const updateDetails = () => {
 		})
 		.catch((error) => {
 			console.error("Error updating user details:", error);
+		})
+		.finally(() => {
+			useState("loading").value = false;
 		});
 };
 </script>
@@ -117,7 +132,9 @@ const updateDetails = () => {
 					/>
 				</div>
 				<div class="action">
-					<button class="primary-btn" @click="updateDetails">Update Details</button>
+					<button class="primary-btn" @click="updateDetails">
+						Update Details
+					</button>
 				</div>
 			</section>
 			<section class="password">
@@ -137,7 +154,9 @@ const updateDetails = () => {
 					/>
 				</div>
 				<div class="action">
-					<button class="primary-btn" @click="updatePassword">Update Password</button>
+					<button class="primary-btn" @click="updatePassword">
+						Update Password
+					</button>
 				</div>
 			</section>
 		</div>
@@ -217,7 +236,6 @@ h1 {
 	display: flex;
 	gap: 2rem;
 
-
 	input {
 		width: 100%;
 	}
@@ -226,7 +244,6 @@ h1 {
 .action {
 	display: flex;
 	justify-content: end;
-
 
 	button {
 		width: 15rem;
