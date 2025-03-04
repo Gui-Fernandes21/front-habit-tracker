@@ -5,6 +5,8 @@ definePageMeta({
 	middleware: "auth",
 });
 
+const loading = useState("loading");
+
 const username = ref("");
 const email = ref("");
 const newPassword = ref("");
@@ -29,7 +31,7 @@ useService("/user-profile")
 		console.error("LOG[useService]: Error fetching user data ->", error);
 	})
 	.finally(() => {
-		useState("loading").value = false;
+		loading.value = false;
 	});
 
 const captureFile = (event) => {
@@ -46,7 +48,7 @@ const captureFile = (event) => {
 		body: { path: profilePicUrl },
 	})
 		.then(({ data }) => {
-			console.log(data);
+			console.log(data.value.message);
 		})
 		.catch((error) => {
 			profilePicUrl.value = oldPicture;
@@ -58,7 +60,7 @@ const captureFile = (event) => {
 };
 
 const updatePassword = () => {
-	useState("loading").value = true;
+	loading.value = true;
 
 	const body = {
 		currentPassword: currentPassword.value,
@@ -70,20 +72,20 @@ const updatePassword = () => {
 		body: JSON.stringify(body),
 	})
 		.then(({ data }) => {
-			console.log(data); 
+			console.log(data.value.message);
 		})
 		.catch((error) => {
 			console.error("Error updating password:", error);
 		})
 		.finally(() => {
-			useState("loading").value = false;
+			loading.value = false;
 			currentPassword.value = "";
 			newPassword.value = "";
 		});
 };
 
 const updateDetails = () => {
-	useState("loading").value = true;
+	loading.value = true;
 
 	const body = {
 		name: username.value,
@@ -95,15 +97,33 @@ const updateDetails = () => {
 		body: JSON.stringify(body),
 	})
 		.then(({ data }) => {
-			console.log(data);
+			console.log(data.value.message);
 		})
 		.catch((error) => {
 			console.error("Error updating user details:", error);
 		})
 		.finally(() => {
-			useState("loading").value = false;
+			loading.value = false;
 		});
 };
+
+const deleteProfilePicture = () => {
+	loading.value = true;
+
+	useService("/delete-profile-picture", {
+		method: "DELETE",
+	})
+		.then(({ data }) => {
+			console.log(data.value.message);
+			profilePicUrl.value = "";
+		})
+		.catch((error) => {
+			console.error("Error deleting profile picture:", error);
+		})
+		.finally(() => {
+			loading.value = false;
+		});
+}
 </script>
 
 <template>
