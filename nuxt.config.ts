@@ -13,4 +13,11 @@ export default defineNuxtConfig({
 			apiUrl: process.env.NUXT_PUBLIC_API_URL || "http://localhost:8080/",
 		},
 	},
+	nitro: {
+		preset: "firebase",
+		firebase: {
+			gen: 2,
+			nodeVersion: "18",
+		},
+	}
 });
