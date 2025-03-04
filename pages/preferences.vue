@@ -8,7 +8,7 @@ definePageMeta({
 const username = ref("");
 const email = ref("");
 const newPassword = ref("");
-const oldPassword = ref("");
+const currentPassword = ref("");
 
 const profilePicUrl = ref("");
 
@@ -34,6 +34,7 @@ useService("/user-profile")
 
 const captureFile = (event) => {
 	const file = event.target.files[0];
+	const oldPicture = profilePicUrl.value;
 	profilePicUrl.value = URL.createObjectURL(file);
 
 	const fReader = new FileReader();
@@ -48,6 +49,7 @@ const captureFile = (event) => {
 			console.log(data);
 		})
 		.catch((error) => {
+			profilePicUrl.value = oldPicture;
 			console.error(
 				"LOG[captureFile(event)]:Error uploading profile picture:",
 				error
@@ -56,20 +58,27 @@ const captureFile = (event) => {
 };
 
 const updatePassword = () => {
+	useState("loading").value = true;
+
 	const body = {
-		oldPassword: oldPassword.value,
+		currentPassword: currentPassword.value,
 		newPassword: newPassword.value,
 	};
 
 	useService("/update-password", {
-		method: "POST",
+		method: "PATCH",
 		body: JSON.stringify(body),
 	})
 		.then(({ data }) => {
-			console.log(data);
+			console.log(data); 
 		})
 		.catch((error) => {
 			console.error("Error updating password:", error);
+		})
+		.finally(() => {
+			useState("loading").value = false;
+			currentPassword.value = "";
+			newPassword.value = "";
 		});
 };
 
@@ -143,8 +152,8 @@ const updateDetails = () => {
 					<input
 						class="primary-input"
 						type="password"
-						placeholder="Old Password"
-						v-model="oldPassword"
+						placeholder="Current Password"
+						v-model="currentPassword"
 					/>
 					<input
 						class="primary-input"
