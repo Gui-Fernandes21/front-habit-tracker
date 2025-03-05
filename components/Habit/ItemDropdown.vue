@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, defineProps } from 'vue';
+import { defineEmits } from 'vue';
 
 const emit = defineEmits(['edit-habit', 'delete-habit','update:open']);
 const props = defineProps({ open: { type: Boolean, required: true } });

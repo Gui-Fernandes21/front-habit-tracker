@@ -39,6 +39,29 @@ watch(filterStatus, (newValue) => fetchHabits({ filter: newValue }));
 // ==============================METHODS==========================================
 // ===============================================================================
 
+const addHabit = async (newHabit) => {
+	loading.value = true;
+
+	try {
+		const { data } = await useService("/add-habit", {
+			method: "POST",
+			body: newHabit,
+		});
+
+		if (filterStatus.value == "ALL" || filterStatus.value == "TODO") {
+			habits.value = [...habits.value, data.value.habit];
+		}
+
+		habits.value = sortHabitsArray(habits.value);
+
+		console.log("Habit added successfully:", data.value.habit);
+	} catch (err) {
+		console.error("An error occurred while adding habit:", err);
+	} finally {
+		loading.value = false;
+	}
+};
+
 const deleteHabit = async (id) => {
 	if (!id) {
 		return console.error("No habit id provided.");
@@ -104,7 +127,7 @@ const updateHabit = async (habit) => {
 		<TheNav />
 		<SideNav />
 		<div class="content">
-			<HabitPagination></HabitPagination>
+			<HabitPagination @add-habit="addHabit"></HabitPagination>
 			<div class="filter-container">
 				<div class="group-select">
 					<select id="filter-status" v-model="filterStatus">

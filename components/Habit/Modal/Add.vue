@@ -1,7 +1,7 @@
 <script setup>
-import { ref, defineProps, defineEmits } from "vue";
+import { ref, defineEmits } from "vue";
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "add-habit"]);
 const router = useRouter();
 
 const props = defineProps({
@@ -17,35 +17,24 @@ const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
 
 const saveHabit = async () => {
-	useState("loading").value = true;
-
 	if (!habitName.value || !habitHour.value || !habitMinute.value) {
 		console.error("Please fill in all required fields.");
-		useState("loading").value = false;
 		return;
 	}
+	
+	emit("add-habit", {
+		name: habitName.value,
+		description: habitDescription.value,
+		hour: habitHour.value,
+		minute: habitMinute.value,
+	});
 
-	try {
-		const body = {
-			name: habitName.value,
-			description: habitDescription.value,
-			hour: habitHour.value,
-			minute: habitMinute.value,
-		};
+	habitName.value = "";
+	habitDescription.value = "";
+	habitHour.value = "";
+	habitMinute.value = "";
 
-		const { data } = await useService("/add-habit", {
-			method: "POST",
-			body: JSON.stringify(body),
-			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
-		});
-
-		router.go(0);
-		useState("loading").value = false;
-		emit("close");
-	} catch (error) {
-		useState("loading").value = false;
-		console.error("An error occurred while saving habit:", error);
-	}
+	close();
 };
 
 const close = () => {

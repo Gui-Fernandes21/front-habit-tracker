@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, defineEmits } from "vue";
+import { ref, defineEmits } from "vue";
 import ItemDropdown from "./ItemDropdown.vue";
 
 const props = defineProps({

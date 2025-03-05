@@ -3,8 +3,7 @@
     "default": "habit-tracker-uol"
   },
   "functions": {
-    "source": ".output/server/index.mjs",
-    "runtime": "nodejs18"
+    "source": ".output/server/index.mjs"
   },
   "hosting": [
     {

@@ -1,5 +1,7 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, defineEmits, computed } from "vue";
+
+const emit = defineEmits(["add-habit"]);
 
 const currentDate = computed(() => {
   const now = new Date();
@@ -14,12 +16,19 @@ const currentDate = computed(() => {
 
 const addHabitModal = ref(false);
 
-const addHabit = () => {
+const openAddHabit = () => {
   addHabitModal.value = true;
 };
 
 const closeHabitModal = () => {
   addHabitModal.value = false;
+};
+
+const addHabit = (newHabit) => {
+  console.log(newHabit);
+  
+  emit('add-habit', newHabit);
+  closeHabitModal();
 };
 
 </script>
@@ -28,17 +37,13 @@ const closeHabitModal = () => {
 	<section>
 		<div class="page">
       <h2 class="date">{{ currentDate }}</h2>
-      <!-- <div class="actions">
-        <div class="prev"><</div>
-        <div class="next">></div>
-      </div> -->
     </div>
 		<div class="action">
-			<button @click="addHabit" @close="closeHabitModal" class="primary-btn">Add Habits</button>
+			<button @click="openAddHabit" @close="closeHabitModal" class="primary-btn">Add Habits</button>
 		</div>
     <Clock />
 	</section>
-  <HabitModalAdd :open="addHabitModal" @close="closeHabitModal" />
+  <HabitModalAdd :open="addHabitModal" @add-habit="addHabit" @close="closeHabitModal" />
 </template>
 
 <style scoped>
