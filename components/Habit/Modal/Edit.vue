@@ -14,6 +14,7 @@ const habitName = ref(props.habit.name);
 const habitDescription = ref(props.habit.description);
 const habitHour = ref(props.habit.hour);
 const habitMinute = ref(props.habit.minute);
+const habitStatus = ref(props.habit.status);
 
 const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
@@ -26,6 +27,7 @@ const saveHabit = () => {
 		description: habitDescription.value,
 		hour: habitHour.value,
 		minute: habitMinute.value,
+		status: habitStatus.value,
 		_id: habit.value._id,
 	});
 	emit("close");
@@ -70,6 +72,16 @@ const close = () => {
 						class="primary-input"
 						v-model="habitDescription"
 					></textarea>
+				</div>
+				<div class="form-group">
+					<label for="habit-status">Habit Status</label>
+					<div class="group-select">
+						<select id="habit-status" v-model="habitStatus">
+							<option value="TODO">To Do</option>
+							<option value="DONE">Done</option>
+							<option value="SKIP">Skip</option>
+						</select>
+					</div>
 				</div>
 				<div class="actions">
 					<button type="submit" class="primary-btn">Save</button>
@@ -122,6 +134,8 @@ form {
 	display: flex;
 	flex-direction: column;
 
+	font-family: "Open Sans", sans-serif;
+
 	gap: 2rem;
 }
 
@@ -141,6 +155,9 @@ select {
 	border: 2px solid var(--primary);
 	border-radius: 5px;
 	cursor: pointer;
+
+	font-family: "Open Sans", sans-serif;
+	font-weight: 500;
 }
 
 .group-select {
