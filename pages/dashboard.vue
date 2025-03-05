@@ -1,33 +1,44 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 definePageMeta({
 	middleware: "auth",
 });
 
+const loading = useState("loading");
+const filterStatus = ref("TODO");
 const habits = ref([]);
 
 // ===============================================================================
-useService("/fetch-habits", {
-	method: "GET",
-	headers: {
-		Authorization: `Bearer ${useCookie("auth-token").value}`,
-	},
-})
-	.then((res) => {
-		const { data } = res;
+// ==============================FETCH DASHBOARD==================================
+// ===============================================================================
+
+const fetchHabits = async ({ filter = "TODO" } = {}) => {
+	loading.value = true;
+	try {
+		const { data } = await useService("/fetch-habits", {
+			params: { filter },
+		});
 		if (data.value) {
 			habits.value = data.value.habits;
-			console.log("Habits fetched successfully:", habits.value);
+			console.log("Habits fetched successfully: ", habits.value);
+		} else {
+			console.warn("No habits found for the given filter status: ", filter);
 		}
-	})
-	.catch((error) => {
-		console.error("An error occurred while fetching habits:", error);
-	})
-	.finally(() => {
-		useState("loading").value = false;
-	});
+	} catch (err) {
+		console.error("An error occurred while fetching habits:", err);
+	} finally {
+		loading.value = false;
+	}
+};
 
-// ==============================METHODS========================================
+fetchHabits();
+
+watch(filterStatus, (newValue) => fetchHabits({ filter: newValue }));
+
+// ===============================================================================
+// ==============================METHODS==========================================
+// ===============================================================================
+
 const deleteHabit = async (id) => {
 	if (!id) {
 		return console.error("No habit id provided.");
@@ -40,7 +51,7 @@ const deleteHabit = async (id) => {
 	}
 
 	try {
-		useState("loading").value = true;
+		loading.value = true;
 		const { data } = await useService("/delete-habit/" + id, {
 			method: "DELETE",
 			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
@@ -50,25 +61,18 @@ const deleteHabit = async (id) => {
 	} catch (err) {
 		console.error("An error occurred while deleting habit:", err);
 	} finally {
-		useState("loading").value = false;
+		loading.value = false;
 	}
 };
 
-const saveHabit = async (habit) => {
-	useState("loading").value = true;
-
-	const body = {
-		name: habit.name,
-		description: habit.description,
-		hour: habit.hour,
-		minute: habit.minute,
-	};
+const updateHabit = async (habit) => {
+	loading.value = true;
 
 	try {
 		const { data } = await useService("/update-habit/" + habit._id, {
 			method: "PATCH",
 			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
-			body,
+			body: habit,
 		});
 
 		habits.value = habits.value.map((item) => {
@@ -78,13 +82,19 @@ const saveHabit = async (habit) => {
 			return item;
 		});
 
+		if (filterStatus.value !== "ALL") {
+			habits.value = habits.value.filter(
+				(habit) => habit.status === filterStatus.value
+			);
+		}
+
 		habits.value = sortHabitsArray(habits.value);
 
 		console.log("Habit updated successfully:", data.value.habit);
 	} catch (err) {
 		console.error("An error occurred while updating habit:", err);
 	} finally {
-		useState("loading").value = false;
+		loading.value = false;
 	}
 };
 </script>
@@ -95,13 +105,24 @@ const saveHabit = async (habit) => {
 		<SideNav />
 		<div class="content">
 			<HabitPagination></HabitPagination>
+			<div class="filter-container">
+				<div class="group-select">
+					<select id="filter-status" v-model="filterStatus">
+						<option value="ALL">All</option>
+						<option value="TODO">To Do</option>
+						<option value="DONE">Done</option>
+						<option value="SKIP">Skip</option>
+					</select>
+				</div>
+			</div>
 			<ul v-if="habits.length">
 				<HabitItem
 					v-for="habit in habits"
 					:key="habit._id"
 					:item="habit"
+					:style="habit.status"
 					@delete="deleteHabit(habit._id)"
-					@save-habit="saveHabit"
+					@save-habit="updateHabit"
 				></HabitItem>
 			</ul>
 			<h1 v-else>No habits found.</h1>
@@ -136,5 +157,28 @@ h1 {
 	color: var(--dark-light);
 	font-family: "Montserrat", sans-serif;
 	margin: 1rem 0;
+}
+
+.filter-container {
+	display: flex;
+	justify-content: end;
+	align-items: end;
+	margin: 1rem 0;
+}
+
+select {
+	padding: 0.5rem 1rem;
+	border: 2px solid var(--primary);
+	border-radius: 5px;
+	cursor: pointer;
+
+	font-family: "Open Sans", sans-serif;
+	font-weight: 500;
+}
+
+label {
+	font-family: "Open Sans", sans-serif;
+	font-size: 0.9rem;
+	margin-bottom: 5px;
 }
 </style>

@@ -2,7 +2,11 @@
 import { defineProps, ref, defineEmits } from "vue";
 import ItemDropdown from "./ItemDropdown.vue";
 
-const props = defineProps({ item: { type: Object, required: true } });
+const props = defineProps({
+	item: { type: Object, required: true },
+	style: { type: String, required: true, default: "TODO" },
+});
+
 const emit = defineEmits(["delete", "save-habit"]);
 
 const habit = ref(props.item);
@@ -28,11 +32,15 @@ const toggleDropdown = () => {
 };
 
 const confirmAction = () => {
-	console.log("confirm");
+	saveHabit({ ...habit.value, status: "DONE" });
 };
 
 const skipAction = () => {
-	console.log("skip");
+	saveHabit({ ...habit.value, status: "SKIP" });
+};
+
+const todoAction = () => {
+	saveHabit({ ...habit.value, status: "TODO" });
 };
 
 const saveHabit = (updatedHabit) => {
@@ -41,10 +49,13 @@ const saveHabit = (updatedHabit) => {
 </script>
 
 <template>
-	<li>
+	<li :class="style">
 		<div class="head">
 			<div class="time">{{ item.hour }}:{{ item.minute }}</div>
-			<h2 class="title">{{ item.name }}</h2>
+			<div class="header">
+				<span :class="item.status">{{ item.status }}</span>
+				<h2 class="title">{{ item.name }}</h2>
+			</div>
 			<div class="float-btn" @click="toggleDropdown">
 				<img src="/svg/edit-icon.svg" alt="edit icon" />
 				<ItemDropdown
@@ -60,8 +71,9 @@ const saveHabit = (updatedHabit) => {
 			{{ item.description }}
 		</div>
 		<div class="actions">
-			<button class="primary-btn" @click="confirmAction">Confirm</button>
-			<button class="accent-btn outline" @click="skipAction">Skip</button>
+			<button v-if="item.status === 'TODO' || item.status == 'SKIP'" class="primary-btn" @click="confirmAction">Confirm</button>
+			<button v-if="item.status === 'DONE' || item.status === 'SKIP'" class="dark-btn outline" @click="todoAction">Mark as TODO</button>
+			<button v-if="item.status !== 'SKIP'" class="accent-btn outline" @click="skipAction">Skip</button>
 		</div>
 
 		<HabitModalEdit
@@ -79,16 +91,53 @@ li {
 	padding: 1rem;
 	width: 100%;
 
-	border: 1px solid var(--primary);
 	border-radius: 5px;
+}
+
+li.TODO {
+	border: 2px solid var(--dark-light-1);
+
+	& .float-btn {
+		background-color: var(--dark-light);
+		border: none;
+	}
+}
+
+li.DONE {
+	border: 2px solid var(--primary);
+}
+
+li.SKIP {
+	border: 2px solid var(--accent);
+
+	& .float-btn {
+		background-color: var(--accent);
+		border: 1px solid var(--accent);
+	}
 }
 
 .head {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
+	align-items: end;
 
 	font-family: "Montserrat", sans-serif;
+}
+
+span {
+	font-size: 1rem;
+}
+
+span.TODO {
+	color: var(--dark-light-1);
+}
+
+span.DONE {
+	color: var(--primary);
+}
+
+span.SKIP {
+	color: var(--accent);
 }
 
 .title {
