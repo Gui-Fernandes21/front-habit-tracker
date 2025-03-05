@@ -6,6 +6,7 @@ const props = defineProps({
 	item: { type: Object, required: true },
 	style: { type: String, required: true, default: "TODO" },
 });
+
 const emit = defineEmits(["delete", "save-habit"]);
 
 const habit = ref(props.item);
@@ -31,11 +32,15 @@ const toggleDropdown = () => {
 };
 
 const confirmAction = () => {
-	console.log("confirm");
+	saveHabit({ ...habit.value, status: "DONE" });
 };
 
 const skipAction = () => {
-	console.log("skip");
+	saveHabit({ ...habit.value, status: "SKIP" });
+};
+
+const todoAction = () => {
+	saveHabit({ ...habit.value, status: "TODO" });
 };
 
 const saveHabit = (updatedHabit) => {
@@ -66,8 +71,9 @@ const saveHabit = (updatedHabit) => {
 			{{ item.description }}
 		</div>
 		<div class="actions">
-			<button class="primary-btn" @click="confirmAction">Confirm</button>
-			<button class="accent-btn outline" @click="skipAction">Skip</button>
+			<button v-if="item.status === 'TODO' || item.status == 'SKIP'" class="primary-btn" @click="confirmAction">Confirm</button>
+			<button v-if="item.status === 'DONE' || item.status === 'SKIP'" class="dark-btn outline" @click="todoAction">Mark as TODO</button>
+			<button v-if="item.status !== 'SKIP'" class="accent-btn outline" @click="skipAction">Skip</button>
 		</div>
 
 		<HabitModalEdit

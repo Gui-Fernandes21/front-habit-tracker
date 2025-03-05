@@ -38,6 +38,28 @@
 	}
 }
 
+.dark-btn {
+	background-color: var(--dark-light);
+	color: var(--light);
+	padding: 0.5rem 3rem;
+	border: 2px solid var(--dark-light);
+	border-radius: 5px;
+	cursor: pointer;
+
+	font-family: "Open Sans", sans-serif;
+
+	&.outline,
+	&:hover {
+		background-color: transparent;
+		color: var(--dark-light);
+	}
+
+	&.outline:hover {
+		background-color: var(--dark-light);
+		color: var(--light);
+	}
+}
+
 .accent-btn {
 	background-color: var(--accent);
 	color: var(--light);

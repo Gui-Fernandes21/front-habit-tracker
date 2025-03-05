@@ -20,8 +20,6 @@ const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
 
 const saveHabit = () => {
-	console.log(habit.value._id);
-
 	emit("save-habit", {
 		name: habitName.value,
 		description: habitDescription.value,
@@ -30,7 +28,7 @@ const saveHabit = () => {
 		status: habitStatus.value,
 		_id: habit.value._id,
 	});
-	emit("close");
+	close();
 };
 
 const close = () => {

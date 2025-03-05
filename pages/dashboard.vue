@@ -51,7 +51,7 @@ const deleteHabit = async (id) => {
 	}
 
 	try {
-		useState("loading").value = true;
+		loading.value = true;
 		const { data } = await useService("/delete-habit/" + id, {
 			method: "DELETE",
 			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
@@ -61,25 +61,18 @@ const deleteHabit = async (id) => {
 	} catch (err) {
 		console.error("An error occurred while deleting habit:", err);
 	} finally {
-		useState("loading").value = false;
+		loading.value = false;
 	}
 };
 
-const saveHabit = async (habit) => {
-	useState("loading").value = true;
-
-	const body = {
-		name: habit.name,
-		description: habit.description,
-		hour: habit.hour,
-		minute: habit.minute,
-	};
+const updateHabit = async (habit) => {
+	loading.value = true;
 
 	try {
 		const { data } = await useService("/update-habit/" + habit._id, {
 			method: "PATCH",
 			headers: { Authorization: `Bearer ${useCookie("auth-token").value}` },
-			body,
+			body: habit,
 		});
 
 		habits.value = habits.value.map((item) => {
@@ -89,13 +82,19 @@ const saveHabit = async (habit) => {
 			return item;
 		});
 
+		if (filterStatus.value !== "ALL") {
+			habits.value = habits.value.filter(
+				(habit) => habit.status === filterStatus.value
+			);
+		}
+
 		habits.value = sortHabitsArray(habits.value);
 
 		console.log("Habit updated successfully:", data.value.habit);
 	} catch (err) {
 		console.error("An error occurred while updating habit:", err);
 	} finally {
-		useState("loading").value = false;
+		loading.value = false;
 	}
 };
 </script>
@@ -123,7 +122,7 @@ const saveHabit = async (habit) => {
 					:item="habit"
 					:style="habit.status"
 					@delete="deleteHabit(habit._id)"
-					@save-habit="saveHabit"
+					@save-habit="updateHabit"
 				></HabitItem>
 			</ul>
 			<h1 v-else>No habits found.</h1>
