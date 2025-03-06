@@ -89,9 +89,21 @@ const saveHabit = (updatedHabit) => {
 li {
 	margin: 1rem 0;
 	padding: 1rem;
-	width: 100%;
+	width: 50%;
+	justify-self: start;
 
 	border-radius: 5px;
+	margin-top: 3rem;
+}
+
+.float-btn {
+	width: 2rem;
+	height: 2rem;	
+}
+
+.float-btn img {
+	width: 0.7rem;
+	height: 0.7rem;	
 }
 
 li.TODO {
@@ -148,6 +160,7 @@ span.SKIP {
 	text-align: center;
 	margin: 1.5rem 0;
 	padding: 0 1rem;
+	font-size: 0.8rem;
 }
 
 .actions {
@@ -164,6 +177,12 @@ span.SKIP {
 }
 
 .time {
-	font-size: 1.2rem;
+	font-size: 1rem;
+}
+
+h2 {
+	font-family: "Montserrat", sans-serif;
+	font-weight: 400;
+	font-size: 1.1rem;
 }
 </style>

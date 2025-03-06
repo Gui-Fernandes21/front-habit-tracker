@@ -129,7 +129,7 @@ const updateHabit = async (habit) => {
 		<div class="content">
 			<HabitPagination @add-habit="addHabit"></HabitPagination>
 			<div class="filter-container">
-				<div class="group-select">
+				<div class="group-select select-custom">
 					<select id="filter-status" v-model="filterStatus">
 						<option value="ALL">All</option>
 						<option value="TODO">To Do</option>
@@ -186,7 +186,7 @@ h1 {
 
 .filter-container {
 	display: flex;
-	justify-content: end;
+	justify-content: start;
 	align-items: end;
 	margin: 1rem 0;
 }
@@ -205,5 +205,16 @@ label {
 	font-family: "Open Sans", sans-serif;
 	font-size: 0.9rem;
 	margin-bottom: 5px;
+}
+
+.select-custom {
+	width: 100%;
+	text-align: left;
+	margin-top: 4rem;
+	justify-self: start;
+}
+
+#filter-status {
+	width: 15%;
 }
 </style>

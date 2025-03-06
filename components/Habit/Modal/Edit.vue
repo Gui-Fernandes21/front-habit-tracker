@@ -15,9 +15,13 @@ const habitDescription = ref(props.habit.description);
 const habitHour = ref(props.habit.hour);
 const habitMinute = ref(props.habit.minute);
 const habitStatus = ref(props.habit.status);
+const habitGoal = ref(props.habit.goal || 1);
+const repeat = ref(props.habit.repeat || "Daily");
+const startDate = ref(props.habit.startDate || new Date().toISOString().split("T")[0]);
 
 const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
+const repeatOptions = ["Daily", "Weekly", "Monthly"];
 
 const saveHabit = () => {
 	emit("save-habit", {
@@ -26,6 +30,9 @@ const saveHabit = () => {
 		hour: habitHour.value,
 		minute: habitMinute.value,
 		status: habitStatus.value,
+		goal: habitGoal.value,
+    	repeat: repeat.value,
+    	startDate: startDate.value,
 		_id: habit.value._id,
 	});
 	close();
@@ -39,19 +46,29 @@ const close = () => {
 <template>
 	<div class="modal" v-if="open">
 		<div class="modal-content">
-			<h2 class="title">Edit Habit</h2>
+			<h2 class="title">Edit habit</h2>
 			<form @submit.prevent="saveHabit">
 				<div class="form-group">
-					<label for="habit-name">Habit Name</label>
+					<label for="habit-name">Name</label>
 					<input
-						class="primary-input"
+						class="primary-input-form"
 						type="text"
 						id="habit-name"
 						v-model="habitName"
 					/>
 				</div>
 				<div class="form-group">
-					<label for="habit-time">Habit Time</label>
+					<label for="habit-goal">Goal per month</label>
+					<input type="number" id="habit-goal" class="primary-input-form" v-model="habitGoal" min="1" />
+				</div>
+				<div class="form-group">
+					<label for="habit-repeat">Repeat</label>
+					<select id="habit-repeat" v-model="repeat">
+						<option v-for="option in repeatOptions" :value="option">{{ option }}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="habit-time">Time</label>
 					<div class="group-select">
 						<select id="habit-time" v-model="habitHour">
 							<option v-for="hour in hours" :value="hour">{{ hour }}</option>
@@ -64,15 +81,19 @@ const close = () => {
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="habit-description">Habit Description</label>
+					<label for="start-date">Start date</label>
+					<input type="date" id="start-date" class="primary-input-form" v-model="startDate" />
+				</div>
+				<div class="form-group">
+					<label for="habit-description">Description</label>
 					<textarea
 						id="habit-description"
-						class="primary-input"
+						class="primary-input-form"
 						v-model="habitDescription"
 					></textarea>
 				</div>
 				<div class="form-group">
-					<label for="habit-status">Habit Status</label>
+					<label for="habit-status">Status</label>
 					<div class="group-select">
 						<select id="habit-status" v-model="habitStatus">
 							<option value="TODO">To Do</option>
@@ -97,6 +118,7 @@ const close = () => {
 	position: fixed;
 	top: 0;
 	left: 0;
+	bottom: 0;
 	width: 100%;
 	height: 100%;
 	background-color: rgba(33, 33, 33, 0.33);
@@ -114,6 +136,8 @@ const close = () => {
 	padding: 2rem;
 	border-radius: 5px;
 	width: 50%;
+	max-height: calc(100vh - 40px);
+	overflow-y: auto;
 
 	display: flex;
 	flex-direction: column;
@@ -124,7 +148,7 @@ const close = () => {
 	h2 {
 		font-family: "Montserrat", sans-serif;
 		font-weight: 400;
-		font-size: 1.6rem;
+		font-size: 1.1rem;
 	}
 }
 
@@ -134,7 +158,7 @@ form {
 
 	font-family: "Open Sans", sans-serif;
 
-	gap: 2rem;
+	gap: 1.5rem;
 }
 
 .form-group {
@@ -144,18 +168,16 @@ form {
 
 label {
 	font-family: "Open Sans", sans-serif;
-	font-size: 0.9rem;
+	font-size: 0.8rem;
 	margin-bottom: 5px;
 }
 
 select {
-	padding: 0.5rem 1rem;
+	padding: 0.2rem 0.5rem;
 	border: 2px solid var(--primary);
 	border-radius: 5px;
 	cursor: pointer;
-
-	font-family: "Open Sans", sans-serif;
-	font-weight: 500;
+	font-size: 0.8rem;
 }
 
 .group-select {
@@ -164,15 +186,29 @@ select {
 }
 
 #habit-description {
-	min-height: 150px;
+	min-height: 2.5rem;
+	width: 100% !important;
 }
 
 .actions {
+	margin-top: 1.5rem;
 	display: flex;
 	gap: 1rem;
 
 	button {
 		width: 100%;
 	}
+}
+
+.title {
+	text-align: center;
+}
+
+#habit-status {
+	width: 100%;
+}
+
+#start-date, #habit-description {
+	font-family: 'Arial';
 }
 </style>

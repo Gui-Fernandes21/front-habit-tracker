@@ -86,6 +86,10 @@ const close = () => {
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="start-date">Start date</label>
+					<input type="date" id="start-date" class="primary-input-form" v-model="startDate" />
+				</div>
+				<div class="form-group">
 					<label for="habit-description">Description</label>
 					<textarea
 						id="habit-description"
@@ -189,5 +193,13 @@ select {
 	button {
 		width: 100%;
 	}
+}
+
+.title {
+	text-align: center;
+}
+
+#start-date, #habit-description {
+	font-family: 'Arial';
 }
 </style>
