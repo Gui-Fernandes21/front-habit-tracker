@@ -8,6 +8,16 @@ const loading = useState("loading");
 const filterStatus = ref("TODO");
 const habits = ref([]);
 
+const addHabitModal = ref(false);
+
+const openAddHabit = () => {
+  addHabitModal.value = true;
+};
+
+const closeHabitModal = () => {
+  addHabitModal.value = false;
+};
+
 // ===============================================================================
 // ==============================FETCH DASHBOARD==================================
 // ===============================================================================
@@ -55,6 +65,7 @@ const addHabit = async (newHabit) => {
 		habits.value = sortHabitsArray(habits.value);
 
 		console.log("Habit added successfully:", data.value.habit);
+  		closeHabitModal();
 	} catch (err) {
 		console.error("An error occurred while adding habit:", err);
 	} finally {
@@ -128,7 +139,10 @@ const updateHabit = async (habit) => {
 		<SideNav />
 		<div class="content">
 			<HabitPagination @add-habit="addHabit"></HabitPagination>
-			<div class="filter-container">
+			<div class="filter-action-container">
+				<div class="action">
+					<button @click="openAddHabit" @close="closeHabitModal" class="primary-btn">Add habit</button>
+				</div>				
 				<div class="group-select select-custom">
 					<select id="filter-status" v-model="filterStatus">
 						<option value="ALL">All</option>
@@ -151,6 +165,8 @@ const updateHabit = async (habit) => {
 			<h1 v-else>No habits found.</h1>
 		</div>
 	</section>
+
+	<HabitModalAdd :open="addHabitModal" @add-habit="addHabit" @close="closeHabitModal" />
 </template>
 
 <style scoped>
@@ -215,6 +231,28 @@ label {
 }
 
 #filter-status {
-	width: 15%;
+	width: 100%;
+}
+
+.filter-action-container {
+	display: flex;
+	flex-direction: row;
+	width: 70%;
+	gap: 5rem;
+	margin-top: 3rem;
+	justify-self: center;
+}
+
+.filter-action-container .action,
+.filter-action-container .group-select {
+	width: 50%;
+}
+
+.filter-action-container .action {
+	margin-top: 2rem;
+}
+
+.filter-action-container .action button {
+	width: 100%;
 }
 </style>

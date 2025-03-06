@@ -14,6 +14,14 @@ const habit = ref(props.item);
 const dropdownOpen = ref(false);
 const editModal = ref(false);
 
+const formattedDate = computed(() => {
+	if (!props.item.startDate) return "";
+	const date = new Date(props.item.startDate);
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	return `${day}/${month}`;
+});
+
 const editHabit = () => {
 	toggleDropdown();
 	editModal.value = true;
@@ -52,6 +60,15 @@ const saveHabit = (updatedHabit) => {
 	<li :class="style">
 		<div class="head">
 			<div class="time">{{ item.hour }}:{{ item.minute }}</div>
+			<!-- <div class="date"> {{ item.startDate }}</div> -->
+			<!-- <div class="time-date">
+				<div class="time">{{ item.hour }}:{{ item.minute }}</div>
+				<div class="date">Start date: {{ formattedDate }}</div>
+			</div>
+			<div class="habit-meta">
+				<div class="repeat">{{ item.repeat }}</div>
+				<div class="goal">Goal: {{ item.goal }}</div>
+			</div> -->
 			<div class="header">
 				<!-- <span :class="item.status">{{ item.status }}</span> -->
 				<h2 class="title">{{ item.name }}</h2>
@@ -67,6 +84,8 @@ const saveHabit = (updatedHabit) => {
 				></ItemDropdown>
 			</div>
 		</div>
+		<!-- <div class="repeat">{{ item.repeat }}</div>
+		<div class="goal"> Goal: {{ item.goal }}</div> -->
 		<div class="body body-text">
 			{{ item.description }}
 		</div>
@@ -93,7 +112,7 @@ li {
 	justify-self: center;
 
 	border-radius: 5px;
-	margin-top: 3rem;
+	margin-top: 4rem;
 }
 
 .float-btn {
@@ -128,12 +147,40 @@ li.SKIP {
 	}
 }
 
-.head {
+/* .head {
 	display: flex;
 	justify-content: space-between;
 	align-items: end;
 
 	font-family: "Montserrat", sans-serif;
+} */
+.head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-family: "Montserrat", sans-serif;
+}
+
+.time-date {
+	display: flex;
+	align-items: center;
+	gap: 1rem; /* Adjust spacing between time & date */
+}
+
+.time, .date {
+	font-size: 1rem;
+}
+
+.repeat {
+	margin-top: 1rem;
+	font-weight: 500;
+}
+
+/* Keep Goal below Repeat */
+.goal {
+	margin-top: 0.5rem;
+	font-size: 0.9rem;
+	font-weight: 500;
 }
 
 span {
@@ -176,10 +223,6 @@ span.SKIP {
 
 .float-btn {
 	position: relative;
-}
-
-.time {
-	font-size: 1rem;
 }
 
 h2 {

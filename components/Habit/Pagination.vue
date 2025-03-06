@@ -1,7 +1,19 @@
 <script setup>
 import { ref, defineEmits, computed } from "vue";
 
-const emit = defineEmits(["add-habit"]);
+// const emit = defineEmits(["add-habit"]);
+
+const username = ref("");
+
+onMounted(() => {
+  useService("/user-profile")
+    .then(({ data }) => {
+      username.value = data.value.user.name;
+    })
+    .catch((error) => {
+      console.error("Error fetching username:", error);
+    });
+});
 
 const currentDate = computed(() => {
   const now = new Date();
@@ -14,22 +26,22 @@ const currentDate = computed(() => {
   return `${day}/${month}`;
 });
 
-const addHabitModal = ref(false);
+// const addHabitModal = ref(false);
 
-const openAddHabit = () => {
-  addHabitModal.value = true;
-};
+// const openAddHabit = () => {
+//   addHabitModal.value = true;
+// };
 
-const closeHabitModal = () => {
-  addHabitModal.value = false;
-};
+// const closeHabitModal = () => {
+//   addHabitModal.value = false;
+// };
 
-const addHabit = (newHabit) => {
-  console.log(newHabit);
+// const addHabit = (newHabit) => {
+//   console.log(newHabit);
   
-  emit('add-habit', newHabit);
-  closeHabitModal();
-};
+//   emit('add-habit', newHabit);
+//   closeHabitModal();
+// };
 
 </script>
 
@@ -38,15 +50,18 @@ const addHabit = (newHabit) => {
 		<div class="page">
       <h2 class="date">{{ currentDate }}</h2>
     </div>
-		<div class="action">
+		<!-- <div class="action">
 			<button @click="openAddHabit" @close="closeHabitModal" class="primary-btn">Add habit</button>
+		</div> -->
+    <div class="action">
+			<h2 class="welcome-text">Welcome {{ username }}</h2>
 		</div>
     <Clock />
 	</section>
 
   <div class="top-nav-divider"></div>
 
-  <HabitModalAdd :open="addHabitModal" @add-habit="addHabit" @close="closeHabitModal" />
+  <!-- <HabitModalAdd :open="addHabitModal" @add-habit="addHabit" @close="closeHabitModal" /> -->
 </template>
 
 <style scoped>
@@ -89,5 +104,13 @@ section {
 	height: 0.1rem;
 	background-color: var(--accent);
 	margin-top: 1rem;
+}
+
+.welcome-text {
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-align: center;
+
+  font-family: "Montserrat", sans-serif;
 }
 </style>

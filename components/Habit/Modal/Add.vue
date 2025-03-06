@@ -33,12 +33,18 @@ const saveHabit = async () => {
 		description: habitDescription.value,
 		hour: habitHour.value,
 		minute: habitMinute.value,
+		repeat: repeat.value,
+		goal: habitGoal.value,
+		startDate: startDate.value
 	});
 
 	habitName.value = "";
 	habitDescription.value = "";
 	habitHour.value = "";
 	habitMinute.value = "";
+	repeat.value = "Daily";
+	habitGoal.value = 1;
+	startDate.value = ref(new Date().toISOString().split("T")[0]);
 
 	close();
 };
