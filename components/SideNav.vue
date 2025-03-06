@@ -67,6 +67,8 @@ const { logout } = useAuth();
 
 	width: 4rem;
 	padding: 0.5rem;
+	padding-top: 1rem;
+	padding-left: 0.8rem;
 	height: calc(100vh - 5rem);
 	border-right: 2px solid var(--primary);
 
@@ -85,8 +87,8 @@ const { logout } = useAuth();
 	display: grid;
 	place-items: center;
 
-	height: 3rem;
-	width: 3rem;
+	height: 2.5rem;
+	width: 2.5rem;
 
 	padding: 0;
 

@@ -39,7 +39,7 @@ const addHabit = (newHabit) => {
       <h2 class="date">{{ currentDate }}</h2>
     </div>
 		<div class="action">
-			<button @click="openAddHabit" @close="closeHabitModal" class="primary-btn">Add Habits</button>
+			<button @click="openAddHabit" @close="closeHabitModal" class="primary-btn">Add habit</button>
 		</div>
     <Clock />
 	</section>
@@ -62,8 +62,9 @@ section {
 }
 
 .date {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   letter-spacing: 2px;
+  font-weight: 500;
 }
 
 .actions {

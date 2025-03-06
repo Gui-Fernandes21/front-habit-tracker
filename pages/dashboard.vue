@@ -180,6 +180,8 @@ h1 {
 	color: var(--dark-light);
 	font-family: "Montserrat", sans-serif;
 	margin: 1rem 0;
+	margin-left: -1.1rem;
+	font-size: 1rem;
 }
 
 .filter-container {
