@@ -186,7 +186,7 @@ h1 {
 
 .filter-container {
 	display: flex;
-	justify-content: start;
+	justify-content: end;
 	align-items: end;
 	margin: 1rem 0;
 }
@@ -209,7 +209,7 @@ label {
 
 .select-custom {
 	width: 100%;
-	text-align: left;
+	text-align: center;
 	margin-top: 4rem;
 	justify-self: start;
 }

@@ -53,7 +53,7 @@ const saveHabit = (updatedHabit) => {
 		<div class="head">
 			<div class="time">{{ item.hour }}:{{ item.minute }}</div>
 			<div class="header">
-				<span :class="item.status">{{ item.status }}</span>
+				<!-- <span :class="item.status">{{ item.status }}</span> -->
 				<h2 class="title">{{ item.name }}</h2>
 			</div>
 			<div class="float-btn" @click="toggleDropdown">
@@ -89,8 +89,8 @@ const saveHabit = (updatedHabit) => {
 li {
 	margin: 1rem 0;
 	padding: 1rem;
-	width: 50%;
-	justify-self: start;
+	width: 70%;
+	justify-self: center;
 
 	border-radius: 5px;
 	margin-top: 3rem;
