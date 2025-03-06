@@ -43,6 +43,9 @@ const addHabit = (newHabit) => {
 		</div>
     <Clock />
 	</section>
+
+  <div class="top-nav-divider"></div>
+
   <HabitModalAdd :open="addHabitModal" @add-habit="addHabit" @close="closeHabitModal" />
 </template>
 
@@ -79,5 +82,12 @@ section {
 
 .current-time {
 	font-size: 2rem;
+}
+
+.top-nav-divider {
+	width: 100%;
+	height: 0.1rem;
+	background-color: var(--accent);
+	margin-top: 1rem;
 }
 </style>

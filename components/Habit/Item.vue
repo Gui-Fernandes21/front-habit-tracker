@@ -71,9 +71,9 @@ const saveHabit = (updatedHabit) => {
 			{{ item.description }}
 		</div>
 		<div class="actions">
-			<button v-if="item.status === 'TODO' || item.status == 'SKIP'" class="primary-btn" @click="confirmAction">Confirm</button>
-			<button v-if="item.status === 'DONE' || item.status === 'SKIP'" class="dark-btn outline" @click="todoAction">Mark as TODO</button>
-			<button v-if="item.status !== 'SKIP'" class="accent-btn outline" @click="skipAction">Skip</button>
+			<button v-if="item.status === 'TODO' || item.status == 'SKIP'" class="primary-btn btn-custom" @click="confirmAction">Confirm</button>
+			<button v-if="item.status === 'DONE' || item.status === 'SKIP'" class="dark-btn outline btn-custom" @click="todoAction">Mark as TODO</button>
+			<button v-if="item.status !== 'SKIP'" class="accent-btn outline btn-custom" @click="skipAction">Skip</button>
 		</div>
 
 		<HabitModalEdit
@@ -166,6 +166,8 @@ span.SKIP {
 .actions {
 	display: flex;
 	gap: 1rem;
+	justify-content: center;
+	margin-top: 3rem;
 
 	& > button {
 		width: 100%;
@@ -184,5 +186,10 @@ h2 {
 	font-family: "Montserrat", sans-serif;
 	font-weight: 400;
 	font-size: 1.1rem;
+}
+
+.btn-custom {
+	width: 25% !important;
+	padding: 0.3rem 0;
 }
 </style>

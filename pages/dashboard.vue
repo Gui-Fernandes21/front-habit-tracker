@@ -210,7 +210,7 @@ label {
 .select-custom {
 	width: 100%;
 	text-align: center;
-	margin-top: 4rem;
+	margin-top: 2rem;
 	justify-self: start;
 }
 
