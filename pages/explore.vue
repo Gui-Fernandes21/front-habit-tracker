@@ -3,12 +3,13 @@ import { ref, onMounted } from "vue";
 
 const articles = ref([]);
 const loading = ref(true);
+const config = useRuntimeConfig();
 
 const fetchArticles = async () => {
   loading.value = true;
   try {
     const response = await fetch(
-        `https://newsapi.org/v2/everything?q=habits&language=en&apiKey=d5d2d1165d014ee68b7ae00a8956fdce`
+        `https://newsapi.org/v2/everything?q=habits&language=en&apiKey=${config.public.newsApiKey}`
     );
     const data = await response.json();
     if (data.articles) {
