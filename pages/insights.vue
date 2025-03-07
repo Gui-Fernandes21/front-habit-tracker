@@ -45,29 +45,38 @@ const completionRate = computed(() => {
 });
 
 const longestStreak = computed(() => {
-	const completedDates = habits.value
-		.filter((habit) => habit.status === "DONE")
-		.map((habit) => new Date(habit.startDate).toDateString())
-		.sort();
+	const completedDays = [];
+	const habitDays = {};
+
+	habits.value.forEach((habit) => {
+		const dateKey = new Date(habit.startDate).toISOString().slice(0, 10);
+		if (!habitDays[dateKey]) {
+			habitDays[dateKey] = { TODO: 0, DONE: 0, SKIP: 0 };
+		}
+		habitDays[dateKey][habit.status]++;
+	});
 
 	let maxStreak = 0;
-	let currentStreak = 1;
+	let currentStreak = 0;
+	const sortedDates = Object.keys(habitDays).sort();
 
-	for (let i = 1; i < completedDates.length; i++) {
-		const prevDate = new Date(completedDates[i - 1]);
-		const currentDate = new Date(completedDates[i]);
-		const diff = (currentDate - prevDate) / (1000 * 60 * 60 * 24);
+	for (let i = 0; i < sortedDates.length; i++) {
+		const date = sortedDates[i];
+		const { TODO, DONE, SKIP } = habitDays[date];
 
-		if (diff === 1) {
+		if (SKIP > 0) {
+			currentStreak = 0;
+		} else if (DONE > 0 && TODO === 0) {
 			currentStreak++;
 			maxStreak = Math.max(maxStreak, currentStreak);
 		} else {
-			currentStreak = 1;
+			continue;
 		}
 	}
 
 	return maxStreak;
 });
+
 
 const shareText = "Check out my progress on HTK!";
 const shareUrl = "https://yourwebsite.com/insights";
@@ -180,13 +189,13 @@ h1 {
 	justify-content: center;
 	align-items: center;
     margin-top: 4rem;
-    width: 45%;
+    width: 55%;
     padding: 0.7rem 0.5rem;
     margin-left: 3.5rem;
 }
 
 .insights-summary {
-	width: 55%;
+	width: 45%;
 	display: flex;
 	flex-direction: column;
 	gap: 3.5rem;
