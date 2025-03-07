@@ -1,8 +1,6 @@
 <script setup>
 import { ref, defineEmits, computed } from "vue";
 
-// const emit = defineEmits(["add-habit"]);
-
 const username = ref("");
 
 onMounted(() => {
@@ -25,24 +23,6 @@ const currentDate = computed(() => {
 
   return `${day}/${month}`;
 });
-
-// const addHabitModal = ref(false);
-
-// const openAddHabit = () => {
-//   addHabitModal.value = true;
-// };
-
-// const closeHabitModal = () => {
-//   addHabitModal.value = false;
-// };
-
-// const addHabit = (newHabit) => {
-//   console.log(newHabit);
-  
-//   emit('add-habit', newHabit);
-//   closeHabitModal();
-// };
-
 </script>
 
 <template>
@@ -50,9 +30,6 @@ const currentDate = computed(() => {
 		<div class="page">
       <h2 class="date">{{ currentDate }}</h2>
     </div>
-		<!-- <div class="action">
-			<button @click="openAddHabit" @close="closeHabitModal" class="primary-btn">Add habit</button>
-		</div> -->
     <div class="action">
 			<h2 class="welcome-text">Welcome {{ username }}</h2>
 		</div>
@@ -60,8 +37,6 @@ const currentDate = computed(() => {
 	</section>
 
   <div class="top-nav-divider"></div>
-
-  <!-- <HabitModalAdd :open="addHabitModal" @add-habit="addHabit" @close="closeHabitModal" /> -->
 </template>
 
 <style scoped>
