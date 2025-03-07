@@ -36,6 +36,11 @@ const updateDate = () => {
   emit("update-date", selectedDate.value);
   showDatePicker.value = false;
 };
+
+const minYear = 2024;
+const maxYear = 2026;
+const minDate = `${minYear}-01-01`;
+const maxDate = `${maxYear}-12-31`;
 </script>
 
 <template>
@@ -50,6 +55,8 @@ const updateDate = () => {
         v-model="selectedDate"
         @change="updateDate"
         class="date-picker"
+        :min="minDate"
+        :max="maxDate"
       />
     </div>
     <div class="action">
@@ -85,6 +92,7 @@ section {
 
 .date-picker {
   border: 1px solid var(--primary);
+	border-radius: 3px;
   padding: 0.2rem;
   font-size: 0.6rem;
   font-family: "Montserrat", sans-serif;

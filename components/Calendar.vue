@@ -2,6 +2,9 @@
 import { ref, computed, onMounted } from "vue";
 
 const currentDate = ref(new Date());
+const selectedMonth = ref(currentDate.value.getMonth());
+const selectedYear = ref(currentDate.value.getFullYear());
+const showMonthPicker = ref(false);
 const habits = ref([]);
 
 const fetchHabits = async () => {
@@ -24,16 +27,18 @@ const monthNames = [
 	"July", "August", "September", "October", "November", "December"
 ];
 
+const years = computed(() => {
+	const startYear = new Date().getFullYear() - 1;
+	const endYear = new Date().getFullYear() + 1;
+	return Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+});
+
 const daysInMonth = computed(() => {
-	const year = currentDate.value.getFullYear();
-	const month = currentDate.value.getMonth();
-	return new Date(year, month + 1, 0).getDate();
+	return new Date(selectedYear.value, selectedMonth.value + 1, 0).getDate();
 });
 
 const firstDayOfMonth = computed(() => {
-	const year = currentDate.value.getFullYear();
-	const month = currentDate.value.getMonth();
-	return new Date(year, month, 1).getDay();
+	return new Date(selectedYear.value, selectedMonth.value, 1).getDay();
 });
 
 const habitsByDate = computed(() => {
@@ -43,15 +48,34 @@ const habitsByDate = computed(() => {
 		if (!grouped[dateKey]) {
 			grouped[dateKey] = { TODO: 0, DONE: 0, SKIP: 0 };
 		}
-		grouped[dateKey][habit.status]++; // Count each habit
+		grouped[dateKey][habit.status]++;
 	});
 	return grouped;
 });
+
+const updateMonthYear = () => {
+	currentDate.value = new Date(selectedYear.value, selectedMonth.value, 1);
+	showMonthPicker.value = false; 
+};
 </script>
 
 <template>
 	<div class="calendar">
-		<h2 class="month-title">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h2>
+		<div class="month-selector" @click="showMonthPicker = !showMonthPicker">
+			<h2 class="month-title">{{ monthNames[selectedMonth] }} {{ selectedYear }}</h2>
+		</div>
+
+		<div v-if="showMonthPicker" class="month-picker">
+			<select v-model="selectedMonth" @change="updateMonthYear">
+				<option v-for="(month, index) in monthNames" :key="month" :value="index">
+					{{ month }}
+				</option>
+			</select>
+			<select v-model="selectedYear" @change="updateMonthYear">
+				<option v-for="year in years" :key="year" :value="year">{{ year }}</option>
+			</select>
+		</div>
+
 		<div class="calendar-grid">
 			<div class="day-header">Sun</div>
 			<div class="day-header">Mon</div>
@@ -61,19 +85,15 @@ const habitsByDate = computed(() => {
 			<div class="day-header">Fri</div>
 			<div class="day-header">Sat</div>
 
-			<!-- <div v-for="n in firstDayOfMonth" :key="'empty' + n" class="empty-cell"></div>
-			<div v-for="day in daysInMonth" :key="day" class="day">
-				{{ day }}
-			</div> -->
 			<div v-for="n in firstDayOfMonth" :key="'empty' + n" class="empty-cell"></div>
 			<div v-for="day in daysInMonth" :key="day" class="day">
 				<span>{{ day }}</span>
 				<div class="habit-dots">
-					<span v-for="n in (habitsByDate[`${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`]?.TODO || 0)"
+					<span v-for="n in (habitsByDate[`${selectedYear}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`]?.TODO || 0)"
 						  :key="'todo' + n" class="dot todo"></span>
-					<span v-for="n in (habitsByDate[`${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`]?.DONE || 0)"
+					<span v-for="n in (habitsByDate[`${selectedYear}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`]?.DONE || 0)"
 						  :key="'done' + n" class="dot done"></span>
-					<span v-for="n in (habitsByDate[`${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`]?.SKIP || 0)"
+					<span v-for="n in (habitsByDate[`${selectedYear}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`]?.SKIP || 0)"
 						  :key="'skip' + n" class="dot skip"></span>
 				</div>
 			</div>
@@ -85,6 +105,29 @@ const habitsByDate = computed(() => {
 .calendar {
 	width: 100%;
 	text-align: center;
+}
+
+.month-selector {
+	margin-bottom: 1rem;
+	cursor: pointer;
+}
+
+.month-picker {
+	margin-bottom: 1rem;
+	font-family: "Montserrat", sans-serif;
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.month-picker select {
+	padding: 0.2rem;
+	font-size: 0.6rem;
+	border: 1px solid var(--primary);
+	border-radius: 3px;
+	cursor: pointer;
+	background-color: var(--light);
 }
 
 .month-title {
@@ -112,7 +155,6 @@ const habitsByDate = computed(() => {
 	background-color: var(--primary);
 	color: var(--light);
 	font-weight: bold;
-	cursor: pointer;
     font-size: 0.6rem;
 }
 
