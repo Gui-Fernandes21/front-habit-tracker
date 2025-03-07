@@ -25,7 +25,6 @@ const firstDayOfMonth = computed(() => {
 	<div class="calendar">
 		<h2 class="month-title">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h2>
 		<div class="calendar-grid">
-			<!-- Weekday Headers -->
 			<div class="day-header">Sun</div>
 			<div class="day-header">Mon</div>
 			<div class="day-header">Tue</div>
@@ -34,10 +33,7 @@ const firstDayOfMonth = computed(() => {
 			<div class="day-header">Fri</div>
 			<div class="day-header">Sat</div>
 
-			<!-- Empty Days for Alignment -->
 			<div v-for="n in firstDayOfMonth" :key="'empty' + n" class="empty-cell"></div>
-
-			<!-- Days of the Month -->
 			<div v-for="day in daysInMonth" :key="day" class="day">
 				{{ day }}
 			</div>

@@ -7,6 +7,7 @@ definePageMeta({
 const loading = useState("loading");
 const filterStatus = ref("TODO");
 const habits = ref([]);
+const selectedDate = useState("selectedDate", () => new Date().toISOString().slice(0, 10));
 
 const addHabitModal = ref(false);
 
@@ -21,18 +22,19 @@ const closeHabitModal = () => {
 // ===============================================================================
 // ==============================FETCH DASHBOARD==================================
 // ===============================================================================
-
-const fetchHabits = async ({ filter = "TODO" } = {}) => {
+const fetchHabits = async () => {
 	loading.value = true;
 	try {
-		const { data } = await useService("/fetch-habits", {
-			params: { filter },
+		const { data } = await useService("/fetch-habits", { 
+			params: { filter: filterStatus.value, date: selectedDate.value }
 		});
 		if (data.value) {
-			habits.value = data.value.habits;
-			console.log("Habits fetched successfully: ", habits.value);
+			habits.value = data.value.habits.filter(habit => 
+				new Date(habit.startDate).toISOString().slice(0, 10) === selectedDate.value
+			);
+			console.log("Filtered habits for selected date:", selectedDate.value, habits.value);
 		} else {
-			console.warn("No habits found for the given filter status: ", filter);
+			console.warn("No habits found for the given filter status and date:", filterStatus.value, selectedDate.value);
 		}
 	} catch (err) {
 		console.error("An error occurred while fetching habits:", err);
@@ -42,6 +44,11 @@ const fetchHabits = async ({ filter = "TODO" } = {}) => {
 };
 
 fetchHabits();
+
+watch(selectedDate, (newDate) => {
+  console.log("Selected Date Changed:", newDate);
+  fetchHabits();
+});
 
 watch(filterStatus, (newValue) => fetchHabits({ filter: newValue }));
 
@@ -66,6 +73,7 @@ const addHabit = async (newHabit) => {
 
 		console.log("Habit added successfully:", data.value.habit);
   		closeHabitModal();
+		await fetchHabits();
 	} catch (err) {
 		console.error("An error occurred while adding habit:", err);
 	} finally {
@@ -131,6 +139,11 @@ const updateHabit = async (habit) => {
 		loading.value = false;
 	}
 };
+
+const updateSelectedDate = (newDate) => {
+  console.log("Received new selected date:", newDate);
+  selectedDate.value = newDate;
+};
 </script>
 
 <template>
@@ -138,7 +151,7 @@ const updateHabit = async (habit) => {
 		<TheNav />
 		<SideNav />
 		<div class="content">
-			<HabitPagination @add-habit="addHabit"></HabitPagination>
+			<HabitPagination @add-habit="addHabit" @update-date="updateSelectedDate"></HabitPagination>
 			<div class="filter-action-container">
 				<div class="action">
 					<button @click="openAddHabit" @close="closeHabitModal" class="primary-btn">Add habit</button>

@@ -15,13 +15,10 @@ const habitDescription = ref(props.habit.description);
 const habitHour = ref(props.habit.hour);
 const habitMinute = ref(props.habit.minute);
 const habitStatus = ref(props.habit.status);
-const habitGoal = ref(props.habit.goal || 1);
-const repeat = ref(props.habit.repeat || "Daily");
 const startDate = ref(props.habit.startDate || new Date().toISOString().split("T")[0]);
 
 const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
-const repeatOptions = ["Daily", "Weekly", "Monthly"];
 
 const saveHabit = () => {
 	emit("save-habit", {
@@ -30,8 +27,8 @@ const saveHabit = () => {
 		hour: habitHour.value,
 		minute: habitMinute.value,
 		status: habitStatus.value,
-		goal: habitGoal.value,
-    	repeat: repeat.value,
+		goal: 1,
+    	repeat: 'Daily',
     	startDate: startDate.value,
 		_id: habit.value._id,
 	});
@@ -56,16 +53,6 @@ const close = () => {
 						id="habit-name"
 						v-model="habitName"
 					/>
-				</div>
-				<div class="form-group">
-					<label for="habit-goal">Goal per month</label>
-					<input type="number" id="habit-goal" class="primary-input-form" v-model="habitGoal" min="1" />
-				</div>
-				<div class="form-group">
-					<label for="habit-repeat">Repeat</label>
-					<select id="habit-repeat" v-model="repeat">
-						<option v-for="option in repeatOptions" :value="option">{{ option }}</option>
-					</select>
 				</div>
 				<div class="form-group">
 					<label for="habit-time">Time</label>

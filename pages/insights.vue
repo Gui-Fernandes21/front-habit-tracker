@@ -182,7 +182,7 @@ h1 {
     margin-top: 4rem;
     width: 45%;
     padding: 0.7rem 0.5rem;
-    margin-left: 1.5rem;
+    margin-left: 3.5rem;
 }
 
 .insights-summary {
@@ -198,7 +198,7 @@ h1 {
 	display: flex;
 	justify-content: space-between;
 	gap: 1rem;
-    width: 50%;
+    width: 55%;
 }
 
 .summary-box {

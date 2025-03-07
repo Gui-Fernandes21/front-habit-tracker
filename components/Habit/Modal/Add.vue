@@ -10,17 +10,12 @@ const props = defineProps({
 
 const habitName = ref("");
 const habitDescription = ref("");
-const habitGoal = ref(1);
-const repeat = ref("Daily");
 const habitHour = ref("");
 const habitMinute = ref("");
 const startDate = ref(new Date().toISOString().split("T")[0]);
 
 const hours = generateTimeArr(23);
 const minutes = generateTimeArr(59, 5);
-
-const repeatOptions = ["Daily", "Weekly", "Monthly"];
-const timeOfDayOptions = ["Morning", "Afternoon", "Evening", "Night"];
 
 const saveHabit = async () => {
 	if (!habitName.value || !habitHour.value || !habitMinute.value) {
@@ -33,17 +28,15 @@ const saveHabit = async () => {
 		description: habitDescription.value,
 		hour: habitHour.value,
 		minute: habitMinute.value,
-		repeat: repeat.value,
-		goal: habitGoal.value,
-		startDate: startDate.value
+		startDate: startDate.value,
+		goal: 1,
+		repeat: 'Daily'
 	});
 
 	habitName.value = "";
 	habitDescription.value = "";
 	habitHour.value = "";
 	habitMinute.value = "";
-	repeat.value = "Daily";
-	habitGoal.value = 1;
 	startDate.value = ref(new Date().toISOString().split("T")[0]);
 
 	close();
@@ -67,16 +60,6 @@ const close = () => {
 						id="habit-name"
 						v-model="habitName"
 					/>
-				</div>
-				<div class="form-group">
-					<label for="habit-goal">Goal per month</label>
-					<input type="number" id="habit-goal" class="primary-input-form" v-model="habitGoal" min="1" />
-				</div>
-				<div class="form-group">
-					<label for="habit-repeat">Repeat</label>
-					<select id="habit-repeat" v-model="repeat">
-						<option v-for="option in repeatOptions" :value="option">{{ option }}</option>
-					</select>
 				</div>
 				<div class="form-group">
 					<label for="habit-time">Time</label>
