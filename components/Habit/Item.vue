@@ -112,7 +112,7 @@ li {
 	justify-self: center;
 
 	border-radius: 5px;
-	margin-top: 4rem;
+	margin-top: 2rem;
 }
 
 .float-btn {

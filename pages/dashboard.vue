@@ -193,7 +193,11 @@ const updateSelectedDate = (newDate) => {
 }
 
 ul {
+	margin-top: 3rem;
 	list-style: none;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .content {
@@ -252,7 +256,7 @@ label {
 	flex-direction: row;
 	width: 70%;
 	gap: 5rem;
-	margin-top: 3rem;
+	margin: 3rem auto 0;
 	justify-self: center;
 }
 
