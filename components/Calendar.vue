@@ -180,14 +180,14 @@ const updateMonthYear = () => {
 }
 
 .todo {
-	background-color: #f5b400; /* Yellow */
+	background-color: #f5b400;
 }
 
 .done {
-	background-color: #4caf50; /* Green */
+	background-color: #4caf50;
 }
 
 .skip {
-	background-color: #f44336; /* Red */
+	background-color: #f44336;
 }
 </style>

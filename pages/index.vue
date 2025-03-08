@@ -81,8 +81,6 @@ span {
 
 	.logout-btn {
     padding: .8rem;
-    /* width: 3rem;
-    height: 3rem; */
     background: transparent;
     border: 2px solid var(--primary);
     border-radius: 50%;

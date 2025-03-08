@@ -18,10 +18,6 @@ const props = defineProps({
 </template>
 
 <style scoped>
-/* 
-   The outer container that covers the entire viewport 
-   and centers its child (.loading-modal-content) 
-*/
 .loading-modal {
 	position: fixed;
 	top: 0;
@@ -36,7 +32,6 @@ const props = defineProps({
 	font-family: "Montserrat", sans-serif;
 }
 
-/* Semi-transparent dark overlay */
 .loading-modal-overlay {
 	position: absolute;
 	top: 0;
@@ -46,10 +41,6 @@ const props = defineProps({
 	background-color: rgba(34, 34, 34, 0.316);
 }
 
-/* 
-   The white "card" in the center. 
-   Adjust width, height, border-radius, box-shadow as needed. 
-*/
 .loading-modal-content {
 	position: relative;
 	z-index: 10000;
@@ -60,21 +51,12 @@ const props = defineProps({
 	border: 2px solid var(--primary);
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
-	/* 
-    Flex layout to center the spinner and text within the card
-  */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
 
-/* 
-   Circular spinner: 
-   - Base border color (#ccc)
-   - Top border color (#8cc63f) 
-   - Adjust thickness and size to match your design 
-*/
 .spinner {
 	width: 80px;
 	height: 80px;
@@ -85,9 +67,6 @@ const props = defineProps({
 	margin-bottom: 1rem;
 }
 
-/* 
-   Simple rotating animation 
-*/
 @keyframes spin {
 	0% {
 		transform: rotate(0deg);
@@ -97,7 +76,6 @@ const props = defineProps({
 	}
 }
 
-/* Loading text styling */
 p {
 	margin: 0;
 	color: #8cc63f;

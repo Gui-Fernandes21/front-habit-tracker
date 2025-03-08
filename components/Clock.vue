@@ -8,14 +8,11 @@ const updateClock = () => {
   let hours = now.getHours();
   const minutes = now.getMinutes();
 
-  // Determine the period (AM/PM)
   const period = hours >= 12 ? 'PM' : 'AM';
 
-  // Convert to 12-hour format
   hours = hours % 12;
-  hours = hours ? hours : 12; // if hour is 0, set to 12
+  hours = hours ? hours : 12;
 
-  // Format time values to have leading zeros
   const formattedHours = hours < 10 ? '0' + hours : hours;
   const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
 
@@ -25,12 +22,12 @@ const updateClock = () => {
 let interval;
 
 onMounted(() => {
-  updateClock(); // Initial update
-  interval = setInterval(updateClock, 1000); // Update every second
+  updateClock();
+  interval = setInterval(updateClock, 1000);
 });
 
 onBeforeUnmount(() => {
-  clearInterval(interval); // Clear interval when component unmounts
+  clearInterval(interval);
 });
 </script>
 

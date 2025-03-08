@@ -34,7 +34,7 @@ export default {
   padding: 5px;
   position: absolute;
   z-index: 1;
-  bottom: 125%; /* Position the tooltip above the text */
+  bottom: 125%;
   left: 50%;
   margin-left: -60px;
   opacity: 0;
