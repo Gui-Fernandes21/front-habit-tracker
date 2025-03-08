@@ -12,6 +12,7 @@ export default defineNuxtConfig({
  runtimeConfig: {
 					public: {
 									apiUrl: process.env.NUXT_PUBLIC_API_URL || "https://htk-api-414059395729.us-central1.run.app",
+									newsApiKey: process.env.NUXT_PUBLIC_NEWS_API_KEY
 					},
 	},
 

@@ -104,8 +104,15 @@
 }
 
 .primary-input {
-	padding: 1rem 1rem;
+	padding: 0.8rem 0.8rem;
 	border: 2px solid var(--primary);
 	border-radius: 0.5rem;
-	font-size: 1.1rem;
+	font-size: 0.9rem;
+}
+
+.primary-input-form {
+	padding: 0.2rem 0.5rem;
+	border: 2px solid var(--primary);
+	border-radius: 0.5rem;
+	font-size: 0.8rem;
 }

@@ -37,5 +37,6 @@ nav {
 	font-family: "Montserrat", sans-serif;
 	color: var(--primary);
 	user-select: none;
+	margin-left: 2.5rem;
 }
 </style>

@@ -7,22 +7,34 @@ definePageMeta({
 const loading = useState("loading");
 const filterStatus = ref("TODO");
 const habits = ref([]);
+const selectedDate = useState("selectedDate", () => new Date().toISOString().slice(0, 10));
+
+const addHabitModal = ref(false);
+
+const openAddHabit = () => {
+  addHabitModal.value = true;
+};
+
+const closeHabitModal = () => {
+  addHabitModal.value = false;
+};
 
 // ===============================================================================
 // ==============================FETCH DASHBOARD==================================
 // ===============================================================================
-
-const fetchHabits = async ({ filter = "TODO" } = {}) => {
+const fetchHabits = async () => {
 	loading.value = true;
 	try {
-		const { data } = await useService("/fetch-habits", {
-			params: { filter },
+		const { data } = await useService("/fetch-habits", { 
+			params: { filter: filterStatus.value, date: selectedDate.value }
 		});
 		if (data.value) {
-			habits.value = data.value.habits;
-			console.log("Habits fetched successfully: ", habits.value);
+			habits.value = data.value.habits.filter(habit => 
+				new Date(habit.startDate).toISOString().slice(0, 10) === selectedDate.value
+			);
+			console.log("Filtered habits for selected date:", selectedDate.value, habits.value);
 		} else {
-			console.warn("No habits found for the given filter status: ", filter);
+			console.warn("No habits found for the given filter status and date:", filterStatus.value, selectedDate.value);
 		}
 	} catch (err) {
 		console.error("An error occurred while fetching habits:", err);
@@ -32,6 +44,11 @@ const fetchHabits = async ({ filter = "TODO" } = {}) => {
 };
 
 fetchHabits();
+
+watch(selectedDate, (newDate) => {
+  console.log("Selected Date Changed:", newDate);
+  fetchHabits();
+});
 
 watch(filterStatus, (newValue) => fetchHabits({ filter: newValue }));
 
@@ -55,6 +72,8 @@ const addHabit = async (newHabit) => {
 		habits.value = sortHabitsArray(habits.value);
 
 		console.log("Habit added successfully:", data.value.habit);
+  		closeHabitModal();
+		await fetchHabits();
 	} catch (err) {
 		console.error("An error occurred while adding habit:", err);
 	} finally {
@@ -120,6 +139,11 @@ const updateHabit = async (habit) => {
 		loading.value = false;
 	}
 };
+
+const updateSelectedDate = (newDate) => {
+  console.log("Received new selected date:", newDate);
+  selectedDate.value = newDate;
+};
 </script>
 
 <template>
@@ -127,9 +151,12 @@ const updateHabit = async (habit) => {
 		<TheNav />
 		<SideNav />
 		<div class="content">
-			<HabitPagination @add-habit="addHabit"></HabitPagination>
-			<div class="filter-container">
-				<div class="group-select">
+			<HabitPagination @add-habit="addHabit" @update-date="updateSelectedDate"></HabitPagination>
+			<div class="filter-action-container">
+				<div class="action">
+					<button @click="openAddHabit" @close="closeHabitModal" class="primary-btn">Add habit</button>
+				</div>				
+				<div class="group-select select-custom">
 					<select id="filter-status" v-model="filterStatus">
 						<option value="ALL">All</option>
 						<option value="TODO">To Do</option>
@@ -151,6 +178,8 @@ const updateHabit = async (habit) => {
 			<h1 v-else>No habits found.</h1>
 		</div>
 	</section>
+
+	<HabitModalAdd :open="addHabitModal" @add-habit="addHabit" @close="closeHabitModal" />
 </template>
 
 <style scoped>
@@ -180,6 +209,8 @@ h1 {
 	color: var(--dark-light);
 	font-family: "Montserrat", sans-serif;
 	margin: 1rem 0;
+	margin-left: -1.1rem;
+	font-size: 1rem;
 }
 
 .filter-container {
@@ -203,5 +234,38 @@ label {
 	font-family: "Open Sans", sans-serif;
 	font-size: 0.9rem;
 	margin-bottom: 5px;
+}
+
+.select-custom {
+	width: 100%;
+	text-align: center;
+	margin-top: 2rem;
+	justify-self: start;
+}
+
+#filter-status {
+	width: 100%;
+}
+
+.filter-action-container {
+	display: flex;
+	flex-direction: row;
+	width: 70%;
+	gap: 5rem;
+	margin-top: 3rem;
+	justify-self: center;
+}
+
+.filter-action-container .action,
+.filter-action-container .group-select {
+	width: 50%;
+}
+
+.filter-action-container .action {
+	margin-top: 2rem;
+}
+
+.filter-action-container .action button {
+	width: 100%;
 }
 </style>
