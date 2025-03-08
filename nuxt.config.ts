@@ -4,25 +4,25 @@ export default defineNuxtConfig({
  css: ["~/assets/css/main.css"],
 
  app: {
-					head: {
-									title: "Habit Tracker",
-					},
+	head: {
+		title: "Habit Tracker",
 	},
+},
 
  runtimeConfig: {
-					public: {
-									apiUrl: process.env.NUXT_PUBLIC_API_URL || "https://htk-api-414059395729.us-central1.run.app",
-									newsApiKey: process.env.NUXT_PUBLIC_NEWS_API_KEY
-					},
+	public: {
+		apiUrl: process.env.NUXT_PUBLIC_API_URL || "https://htk-api-414059395729.us-central1.run.app",
+		newsApiKey: process.env.NUXT_PUBLIC_NEWS_API_KEY
 	},
+},
 
  nitro: {
-					preset: "firebase",
-					firebase: {
-									gen: 2,
-									serverFunctionName: "ssr",
-					},
+	preset: "firebase",
+	firebase: {
+		gen: 2,
+		serverFunctionName: "ssr",
 	},
+},
 
  compatibilityDate: "2025-03-05"
 });

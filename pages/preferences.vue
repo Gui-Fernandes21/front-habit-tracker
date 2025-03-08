@@ -132,18 +132,6 @@ const deleteProfilePicture = () => {
 		<SideNav />
 		<div class="content">
 			<h1>User Settings</h1>
-			<!-- <section class="picture">
-				<img
-					:src="profilePicUrl || 'img/unknown-profile.jpg'"
-					alt="Profile Picture"
-					accept=".png, .jpg, .jpeg"
-				/>
-				<input type="file" class="input-file" @input="captureFile" capture />
-				<button class="primary-btn btn-custom flex-end" @click="clickUpload">Upload</button>
-				<button class="accent-btn outline btn-custom" @click="deleteProfilePicture">
-					Delete
-				</button>
-			</section> -->
 			<section class="picture">
 				<div class="profile-container">
 					<img :src="profilePicUrl || 'img/unknown-profile.jpg'" alt="Profile Picture" />
@@ -251,21 +239,6 @@ h1 {
 		margin-bottom: 1rem;
 	}
 }
-
-/* .picture {
-	width: 100%;
-
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-
-	img {
-		width: 4rem;
-		height: 4rem;
-		border-radius: 50%;
-		border: 1px solid var(--primary);
-	}
-} */
 
 .picture {
 	display: grid;

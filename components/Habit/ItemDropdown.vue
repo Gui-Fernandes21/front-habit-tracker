@@ -26,7 +26,7 @@ const deleteHabit = () => {
 <style scoped>
 .dropdown {
 	position: absolute;
-	top: 100%; /* Position the menu below the dropdown */
+	top: 100%;
 	left: -1.5rem;
 	z-index: 100; 
 }
@@ -53,6 +53,6 @@ const deleteHabit = () => {
 }
 
 .dropdown:hover .dropdown-menu {
-  display: block; /* Show menu on hover */
+  display: block;
 }
 </style>

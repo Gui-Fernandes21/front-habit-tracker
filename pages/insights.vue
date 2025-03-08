@@ -45,7 +45,6 @@ const completionRate = computed(() => {
 });
 
 const longestStreak = computed(() => {
-	const completedDays = [];
 	const habitDays = {};
 
 	habits.value.forEach((habit) => {
