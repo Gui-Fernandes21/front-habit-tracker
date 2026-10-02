@@ -2,6 +2,7 @@
 import { ref } from "vue";
 
 definePageMeta({
+	layout: "app",
 	middleware: "auth",
 });
 
@@ -128,8 +129,6 @@ const deleteProfilePicture = () => {
 
 <template>
 	<section class="preferences">
-		<TheNav />
-		<SideNav />
 		<div class="content">
 			<h1>User Settings</h1>
 			<section class="picture">
@@ -193,12 +192,7 @@ const deleteProfilePicture = () => {
 
 <style scoped>
 .preferences {
-	display: grid;
-
-	grid-template-columns: 4rem calc(100% - 4rem);
-	grid-template-rows: 5rem 1fr;
-
-	height: 100%;
+	min-height: 100%;
 }
 
 ul {
@@ -206,8 +200,6 @@ ul {
 }
 
 .content {
-	grid-column: 2;
-	grid-row: 2;
 
 	font-family: "Open Sans", sans-serif;
 

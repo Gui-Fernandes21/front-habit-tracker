@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+	layout: "app",
+});
+
 import { ref, onMounted } from "vue";
 
 const articles = ref([]);
@@ -27,8 +31,6 @@ onMounted(fetchArticles);
 
 <template>
   <section class="explore">
-    <TheNav />
-	<SideNav />
     <div class="content">
         <h1>Explore Articles</h1>
         <div class="top-nav-divider"></div>
@@ -51,15 +53,10 @@ onMounted(fetchArticles);
 
 <style scoped>
 .explore {
-	display: grid;
-	grid-template-columns: 4rem calc(100% - 4rem);
-	grid-template-rows: 5rem 1fr;
-	height: 100%;
+	min-height: 100%;
 }
 
 .content {
-	grid-column: 2;
-	grid-row: 2;
 	font-family: "Open Sans", sans-serif;
 	padding: 1rem;
 	width: 100%;

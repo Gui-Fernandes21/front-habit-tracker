@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch } from "vue";
 definePageMeta({
+	layout: "app",
 	middleware: "auth",
 });
 
@@ -148,8 +149,6 @@ const updateSelectedDate = (newDate) => {
 
 <template>
 	<section class="dashboard">
-		<TheNav />
-		<SideNav />
 		<div class="content">
 			<HabitPagination @add-habit="addHabit" @update-date="updateSelectedDate"></HabitPagination>
 			<div class="filter-action-container">
@@ -184,12 +183,7 @@ const updateSelectedDate = (newDate) => {
 
 <style scoped>
 .dashboard {
-	display: grid;
-
-	grid-template-columns: 4rem calc(100% - 4rem);
-	grid-template-rows: 5rem 1fr;
-
-	height: 100%;
+	min-height: 100%;
 }
 
 ul {
@@ -201,8 +195,6 @@ ul {
 }
 
 .content {
-	grid-column: 2;
-	grid-row: 2;
 
 	padding: 1rem;
 

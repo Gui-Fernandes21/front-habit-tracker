@@ -8,7 +8,9 @@ useState("auth-token", () => null);
 <template>
 	<div>
 		<Loading :show="useState('loading').value" />
-		<NuxtPage />
+		<NuxtLayout>
+			<NuxtPage />
+		</NuxtLayout>
 	</div>
 </template>
 
