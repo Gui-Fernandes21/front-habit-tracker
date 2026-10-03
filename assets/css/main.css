@@ -124,3 +124,115 @@
 	border-radius: 0.5rem;
 	font-size: 0.8rem;
 }
+
+/* ===== Redesign components (shared by the new screens) ===== */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	min-height: 44px;
+	padding: 0 2rem;
+	box-sizing: border-box;
+
+	background: var(--primary-dark);
+	color: #fff;
+	border: 2px solid var(--primary-dark);
+	border-radius: 5px;
+
+	font: 600 0.9rem "Open Sans", sans-serif;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background: #4b5838;
+	border-color: #4b5838;
+}
+
+.btn-outline {
+	background: transparent;
+	color: var(--primary-dark);
+}
+
+.btn-outline:hover {
+	background: var(--primary-dark);
+	color: #fff;
+}
+
+.btn:focus-visible,
+.form-input:focus-visible {
+	outline: 2px solid var(--primary-dark);
+	outline-offset: 2px;
+}
+
+.btn:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.btn-block {
+	width: 100%;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.1rem;
+}
+
+.form-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.form-label {
+	font: 600 0.8rem "Open Sans", sans-serif;
+	color: var(--dark);
+}
+
+.form-input {
+	min-height: 44px;
+	padding: 0 0.8rem;
+	box-sizing: border-box;
+	width: 100%;
+
+	border: 2px solid var(--primary);
+	border-radius: 8px;
+	background: #fff;
+
+	font: 0.9rem "Open Sans", sans-serif;
+	color: var(--dark);
+}
+
+.form-input:focus {
+	border-color: var(--primary-dark);
+}
+
+.form-hint {
+	font-size: 0.75rem;
+	color: var(--muted);
+}
+
+.form-error {
+	margin: 0;
+	padding: 0.7rem 0.9rem;
+	border: 2px solid var(--accent);
+	border-radius: 8px;
+	background: var(--accent-soft);
+	font: 0.85rem "Open Sans", sans-serif;
+	color: #6b4a2f;
+}
+
+.form-switch {
+	margin: 0;
+	text-align: center;
+	font: 0.9rem "Open Sans", sans-serif;
+	color: var(--muted);
+}
+
+.form-switch a {
+	color: var(--primary-dark);
+	font-weight: 600;
+}

@@ -3,105 +3,125 @@ const { isLoggedIn, logout } = useAuth();
 </script>
 
 <template>
-	<section>
-		<img src="/svg/hz-waves.svg" alt="horizontal waves on the screen" />
-		<div>
-			<h1>HTK</h1>
-			<span>Habit Tracker</span>
-			<div class="actions" v-if="!isLoggedIn">
-				<nuxt-link class="primary-btn" to="/login">Login</nuxt-link>
-				<nuxt-link class="accent-btn" to="/signup">Sign Up</nuxt-link>
+	<section class="landing">
+		<WaveLines />
+
+		<div class="hero">
+			<div class="wordmark">
+				<h1>HTK</h1>
+				<p class="name">Habit Tracker</p>
 			</div>
-			<div class="actions-auth" v-else>
-				<nuxt-link class="primary-btn outline" to="/dashboard"
-					>Dashboard</nuxt-link
-				>
-				<a class="logout-btn" @click.prevent="logout">
-					<svg
-						width="15"
-						height="15"
-						viewBox="0 0 18 18"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M2 18C1.45 18 0.979333 17.8043 0.588 17.413C0.196667 17.0217 0.000666667 16.5507 0 16V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H8C8.28333 0 8.521 0.0960001 8.713 0.288C8.905 0.48 9.00067 0.717333 9 1C8.99933 1.28267 8.90333 1.52033 8.712 1.713C8.52067 1.90567 8.28333 2.00133 8 2H2V16H8C8.28333 16 8.521 16.096 8.713 16.288C8.905 16.48 9.00067 16.7173 9 17C8.99933 17.2827 8.90333 17.5203 8.712 17.713C8.52067 17.9057 8.28333 18.0013 8 18H2ZM14.175 10H7C6.71667 10 6.47933 9.904 6.288 9.712C6.09667 9.52 6.00067 9.28267 6 9C5.99933 8.71733 6.09533 8.48 6.288 8.288C6.48067 8.096 6.718 8 7 8H14.175L12.3 6.125C12.1167 5.94167 12.025 5.71667 12.025 5.45C12.025 5.18333 12.1167 4.95 12.3 4.75C12.4833 4.55 12.7167 4.44567 13 4.437C13.2833 4.42833 13.525 4.52433 13.725 4.725L17.3 8.3C17.5 8.5 17.6 8.73333 17.6 9C17.6 9.26667 17.5 9.5 17.3 9.7L13.725 13.275C13.525 13.475 13.2877 13.571 13.013 13.563C12.7383 13.555 12.5007 13.4507 12.3 13.25C12.1167 13.05 12.0293 12.8127 12.038 12.538C12.0467 12.2633 12.1423 12.034 12.325 11.85L14.175 10Z"
-							fill="#F5F5F5"
-						/>
+			<p class="tagline">Plan your day, tick off your habits, watch your streaks grow.</p>
+
+			<div v-if="!isLoggedIn" class="actions">
+				<NuxtLink class="btn" to="/login">Log in</NuxtLink>
+				<NuxtLink class="btn btn-outline" to="/signup">Sign up</NuxtLink>
+			</div>
+			<div v-else class="actions">
+				<NuxtLink class="btn" to="/dashboard">Go to today</NuxtLink>
+				<button type="button" class="btn btn-outline" @click="logout">
+					<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+						<path d="M16 17l5-5-5-5" />
+						<path d="M21 12H9" />
 					</svg>
-				</a>
+					Log out
+				</button>
 			</div>
 		</div>
-		<img src="/svg/hz-waves.svg" alt="horizontal waves on the screen" />
+
+		<WaveLines flip />
 	</section>
 </template>
 
 <style scoped>
-section {
+.landing {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background: #fff;
+	color: var(--dark);
+	font-family: "Open Sans", sans-serif;
+	overflow: hidden;
+}
+
+.hero {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-evenly;
-	height: 100vh;
-}
-
-div {
-	position: relative;
+	gap: 1.75rem;
+	padding: 2rem 1.5rem;
 	text-align: center;
 }
 
-img {
-	width: 100%;
-	height: auto;
+.wordmark {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.25rem;
 }
 
 h1 {
-	color: var(--primary);
-	font-size: 7rem;
+	margin: 0;
 	font-family: "Montserrat", sans-serif;
+	font-weight: 700;
+	font-size: 8rem;
+	line-height: 1;
+	letter-spacing: 4px;
+	color: var(--primary);
 }
 
-span {
-	position: absolute;
-	bottom: 4rem;
-	right: 25%;
-
-	font-family: "Open Sans", sans-serif;
-	font-size: 1.5rem;
+.name {
+	margin: 0;
+	font-family: "Montserrat", sans-serif;
+	font-size: 1.35rem;
+	font-weight: 500;
+	letter-spacing: 6px;
+	text-transform: uppercase;
 }
 
-.actions,
-.actions-auth {
-	margin-top: 2rem;
+.tagline {
+	margin: 0;
+	max-width: 30rem;
+	color: var(--muted);
+	line-height: 1.6;
+}
+
+.actions {
 	display: flex;
 	gap: 1rem;
 }
 
-.actions-auth {
-
-	.logout-btn {
-    padding: .8rem;
-    background: transparent;
-    border: 2px solid var(--primary);
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    path {
-      fill: var(--primary);
-    }
-	}
-
-  .logout-btn:hover {
-    background: var(--primary);
-
-    path {
-      fill: #fff;
-    }
-  }
+.icon {
+	width: 16px;
+	height: 16px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
 }
 
-a {
-	text-decoration: none;
+@media (max-width: 768px) {
+	h1 {
+		font-size: 5.5rem;
+		letter-spacing: 3px;
+	}
+
+	.name {
+		font-size: 1rem;
+		letter-spacing: 5px;
+	}
+
+	.actions {
+		flex-direction: column;
+		width: 100%;
+		max-width: 22rem;
+	}
+
+	.actions .btn {
+		min-height: 48px;
+	}
 }
 </style>

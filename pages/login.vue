@@ -1,98 +1,81 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const email = ref('');
-const password = ref('');
+const email = ref("");
+const password = ref("");
+const errorMessage = ref("");
 
 const login = async () => {
 	useState("loading").value = true;
+	errorMessage.value = "";
 
 	const body = {
 		email: email.value,
 		password: password.value,
 	};
-  
+
 	try {
-		const { data, status } = await useService("/login", {
+		const { data, status, error } = await useService("/login", {
 			method: "POST",
 			body: JSON.stringify(body),
 		});
 
-		if (status.value !== "success") {
-			useState("loading").value = false;
-			return console.error("Login failed:", data.value.message);
+		if (status.value !== "success" || !data.value) {
+			errorMessage.value =
+				error.value?.data?.message || "We couldn't log you in. Check your email and password.";
+			return;
 		}
 
-		if (data.value) {
-			const { token } = data.value;
-			useCookie("auth-token").value = token;
-			useState("loading").value = false;
-			router.push("/dashboard");
-		}
-	} catch (error) {
+		const { token } = data.value as { token: string };
+		useCookie("auth-token").value = token;
+		router.push("/dashboard");
+	} catch (err) {
+		console.error("An error occurred during login:", err);
+		errorMessage.value = "Something went wrong. Please try again.";
+	} finally {
 		useState("loading").value = false;
-		console.error("An error occurred during login:", error);
 	}
 };
 </script>
 
 <template>
-  <TheNav />
+	<AuthShell title="Log in" subtitle="Welcome back.">
+		<form class="form" @submit.prevent="login">
+			<p v-if="errorMessage" class="form-error" role="alert">{{ errorMessage }}</p>
 
-  <section>
+			<div class="form-field">
+				<label class="form-label" for="email">Email</label>
+				<input
+					id="email"
+					v-model="email"
+					class="form-input"
+					type="email"
+					placeholder="you@example.com"
+					autocomplete="email"
+					required
+				/>
+			</div>
 
-    <div class="modal">
-      <h1>Login</h1>
-      <form @submit.prevent="login">
-        <input class="primary-input" type="email" placeholder="Email" id="email" v-model="email" required />
-        <input class="primary-input" type="password" placeholder="Password" id="password" v-model="password" required />
-        <button class="primary-btn">Login</button>
-      </form>
-    </div>
-  </section>
+			<div class="form-field">
+				<label class="form-label" for="password">Password</label>
+				<input
+					id="password"
+					v-model="password"
+					class="form-input"
+					type="password"
+					autocomplete="current-password"
+					required
+				/>
+			</div>
 
+			<button type="submit" class="btn btn-block">Log in</button>
+
+			<p class="form-switch">
+				New to HTK? <NuxtLink to="/signup">Create an account</NuxtLink>
+			</p>
+		</form>
+	</AuthShell>
 </template>
-
-<style scoped>  
-section {
-  background-color: #FFF8EE;
-  min-height: 100vh;
-
-  display: grid;
-  place-items: center;
-}
-.modal {
-  width: 60%;
-  max-width: 600px;
-  padding: 2rem;
-
-  background-color: #FFF;
-  border: 2px solid var(--primary);
-  border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  font-size: 2rem;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 500;
-
-  color: var(--dark-light);
-  margin-bottom: 1rem;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 2.5rem;
-}
-
-button {
-  margin: 1rem 0;
-  font-size: 1.1rem;
-}
-</style>
